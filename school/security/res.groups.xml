@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+   <data>
+       <!-- category for the user-groups-->
+       <record id="custom_module_school_category" model="ir.module.category">
+           <field name="name">School Management</field>
+       </record>
+
+       <!-- students user-group -->
+       <record model="res.groups" id="students_group">
+           <field name="name">Student</field>
+           <field name="category_id" ref="school.custom_module_school_category"/>
+       </record>
+
+       <!--teachers user-group-->
+       <record model="res.groups" id="teachers_group">
+           <field name="name">Teachers</field>
+           <field name="category_id" ref="school.custom_module_school_category"/>
+       </record>
+
+       <!--office staff user-group-->
+       <record model="res.groups" id="staff_group">
+           <field name="name">Office-Staff</field>
+           <field name="category_id" ref="school.custom_module_school_category"/>
+       </record>
+   </data>
+</odoo>

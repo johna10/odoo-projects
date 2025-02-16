@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="student_website_data" name="Student-Admission">
+        <t t-call="website.layout">
+            <div id="wrap" class="oe_structure oe_empty">
+                <div class="container">
+                    <form action='/webform/submit' enctype="multipart/form-data" class="o_mark_required" data-mark="*"
+                          data-model_name="" data-success-page="" method="post" target="_blank">
+                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                        <div class="s_website_form_rows row s_col_no_bgcolor">
+                            <div class="border border-danger" style="padding:50px;">
+                                <div class="" style="float:left;  padding-right:80px">
+                                    <div>
+                                        <span class="s_website_form_label_content"
+                                              style="float:left; padding-right:30px">First Name
+                                        </span>
+                                        <div>
+                                            <input id="name" type="text" class="form-control mt-3"
+                                                   style="width:300px;" name="name" required="1"/>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <span class="s_website_form_label_content"
+                                              style="float:left; padding-right:30px">Last Name
+                                        </span>
+                                        <div>
+                                            <input id="last_name" type="text" class="form-control mt-3"
+                                                   style="width:300px;" name="last_name" required="1"/>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <span class="s_website_form_label_content"
+                                              style="float:left; padding-right:30px">Father Name
+                                        </span>
+                                        <div>
+                                            <input id="father_name" type="text" class="form-control mt-3"
+                                                   style="width:300px;" name="father_name" required="1"/>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <span class="s_website_form_label_content"
+                                              style="float:left; padding-right:30px">Mother Name
+                                        </span>
+                                        <div>
+                                            <input id="mother_name" type="text" class="form-control mt-3"
+                                                   style="width:300px;" name="mother_name" required="1"/>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <span class="s_website_form_label_content"
+                                              style="float:left; padding-right:30px">Class
+                                        </span>
+                                        <div>
+                                            <select id="class" type="text" class="form-control mt-3"
+                                                   style="width:300px;" name="class" required="1">
+                                                <t t-foreach="classes" t-as="each_object">
+                                                    <option t-att-value="each_object.id" t-esc="each_object.name"/>
+                                                </t>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <span class="s_website_form_label_content"
+                                              style="float:left; padding-right:30px">Phone
+                                        </span>
+                                        <div>
+                                            <input id="phone" type="tel" class="form-control mt-3"
+                                                   style="width:300px;" name="phone" required="1"/>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <span class="s_website_form_label_content"
+                                              style="float:left; padding-right:30px">Email
+                                        </span>
+                                        <div>
+                                            <input id="email" type="email" class="form-control mt-3"
+                                                   style="width:300px;" name="email" required="1"/>
+                                             <div id="email_warning" style="color:red; width:300px;">Oooooo</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="" style="float:left;">
+                                    <div>
+                                        <span class="s_website_form_label_content"
+                                              style="float:left; padding-right:30px">Date of Birth
+                                        </span>
+                                        <div>
+                                            <input id="date_of_birth" type="date" class="form-control mt-3 dob"
+                                                   style="width:300px;" name="date_of_birth" required="1"/>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <span class="s_website_form_label_content"
+                                              style="float:left; padding-right:30px">Age
+                                        </span>
+                                        <div>
+                                            <input id="age" type="text" class="form-control mt-3"
+                                                   style="width:300px;" name="age" required="" readonly="1"/>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <span class="s_website_form_label_content"
+                                              style="float:left; padding-right:30px">Gender
+                                        </span>
+                                        <div>
+                                            <select id="gender" type="text" class="form-control mt-3"
+                                                   style="width:300px;" name="gender" required="1">
+                                                    <option value="male">Male</option>
+                                                    <option value="female">Female</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <span class="s_website_form_label_content"
+                                              style="float:left; padding-right:30px">Aadhar Number
+                                        </span>
+                                        <div>
+                                            <input id="aadhaar_number" type="text" class="form-control mt-3"
+                                                   style="width:300px;" name="aadhaar_number" required="1"/>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <span class="s_website_form_label_content"
+                                              style="float:left; padding-right:30px">Tc
+                                        </span>
+                                        <div>
+                                            <input id="tc" class="form-control mt-3"
+                                                   style="width:300px;" name="tc" required=""
+                                                    type="file" accept="image/*,application/pdf,/*"/>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <span class="s_website_form_label_content"
+                                              style="float:left; padding-right:30px">Clubs
+                                        </span>
+                                        <div>
+                                            <select name="type"
+                                                    t-attf-class="form-control select_box_test"
+                                                    required="" multiple="">
+                                                <t t-foreach="clubs" t-as="club">
+                                                    <option t-att-value="club.id">
+                                                        <t t-esc="club.name"/>
+                                                    </option>
+                                                </t>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group col-12 s_website_form_submit" data-name="Submit Button">
+                                <div style="width: 200px;" class="s_website_form_label"/>
+                                <button id='button' type="submit" value="submit" class="btn btn-primary">Submit</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>

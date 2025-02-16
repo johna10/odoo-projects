@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <!--PDF REPORT ACTIONS-->
+    <!--Ir action for the leave report-->
+    <record id="action_leave_report" model="ir.actions.report">
+        <field name="name">Leave Report</field>
+        <field name="model">school.leave</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">school.leave_report_template</field>
+        <field name="report_file">school.leave_report_template</field>
+        <field name="binding_model_id" ref="model_leave_report"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <!--Ir action for the student report-->
+    <record id="action_student_report" model="ir.actions.report">
+        <field name="name">Student Report</field>
+        <field name="model">student.registration</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">school.student_report_template</field>
+        <field name="report_file">school.student_report_template</field>
+        <field name="binding_model_id" ref="model_student_report"/>
+        <field name="binding_type">report</field>
+    </record>
+    <!--XLS REPORT ACTIONS-->
+
+</odoo>

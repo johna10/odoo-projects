@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--list view-->
+    <record id="school_exam_list_view" model="ir.ui.view">
+        <field name="name">Exam List</field>
+        <field name="model">school.exam</field>
+        <field name="arch" type="xml">
+            <list string="ExamList">
+                <field name="name"/>
+                <field name="class_id"/>
+                <field name="papers_ids"/>
+            </list>
+        </field>
+    </record>
+
+    <!--from view-->
+    <record id="school_exam_form_view" model="ir.ui.view">
+        <field name="name">Exam Form</field>
+        <field name="model">school.exam</field>
+        <field name="arch" type="xml">
+            <form string="ExamForm" edit="0">
+                <header>
+                    <button name="action_assign_to_student" type="object"
+                            string="Add to Students" class="oe_highlight" invisible="hide"/>
+                    <button name="action_cancel_exam" type="object"
+                            string="Cancel" class="oe_highlight" invisible="state == 'draft' or state == 'cancelled'"
+                            groups="school.staff_group,school.teachers_group"/>
+                    <field name="state" widget="statusbar"
+                           nolabel="1" statusbar_visible="draft,announced,end,cancelled"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="class_id"/>
+                        </group>
+                        <group>
+                            <field name="start_date"/>
+                            <field name="end_date"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Papers">
+                            <field name="papers_ids">
+                                <list editable="top">
+                                    <field name="subject_id"/>
+                                    <field name="pass_mark"/>
+                                    <field name="max_mark"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+<!--action-->
+    <record id="school_exam_model_action" model="ir.actions.act_window">
+         <field name="name">Exams</field>
+         <field name="res_model">school.exam</field>
+         <field name="view_mode">list,form</field>
+    </record>
+</odoo>

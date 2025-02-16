@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+   <!--Form view inside the wizard for leave report-->
+   <record id="wizard_form_view_for_leave_report" model="ir.ui.view">
+       <field name="name">wizard.leave.report.view.form</field>
+       <field name="model">leave.report</field>
+       <field name="priority" eval="8"/>
+       <field name="arch" type="xml">
+           <form string="leave wizard form">
+               <group>
+                    <field name="report_type"/>
+                    <field name="start_date" invisible="report_type != 'custom'"/>
+                    <field name="end_date" invisible="report_type != 'custom'"/>
+                    <field name="based_on"/>
+                    <field name="selected_class_ids" invisible="based_on != 'class'" widget="many2many_tags"/>
+                    <field name="selected_students_ids" invisible="based_on != 'student'" widget="many2many_tags"/>
+               </group>
+               <footer>
+                   <button name="action_leave_print_pdf_report" string="Print PDF" class="oe_highlight" type="object"/>
+                   <button name="action_leave_print_xls_report" string="Print XLS" class="oe_highlight" type="object"/>
+                   <button name="cancel" string="Cancel" special="cancel"/>
+               </footer>
+           </form>
+       </field>
+   </record>
+
+    <!--Form view inside the wizard for student report-->
+   <record id="wizard_form_view_for_student_report" model="ir.ui.view">
+       <field name="name">wizard.student.report.view.form</field>
+       <field name="model">student.report</field>
+       <field name="priority" eval="8"/>
+       <field name="arch" type="xml">
+           <form string="student wizard form">
+               <group>
+                    <field name="report_type"/>
+                    <field name="selected_class_ids" invisible="report_type != 'class'" widget="many2many_tags"/>
+                    <field name="selected_department_ids" invisible="report_type != 'department'" widget="many2many_tags"/>
+                    <field name="selected_clubs_ids" invisible="report_type != 'club'" widget="many2many_tags"/>
+               </group>
+               <footer>
+                   <button name="action_student_print_pdf_report" string="Print PDF" class="oe_highlight" type="object"/>
+                   <button name="action_student_print_xls_report" string="Print XLS" class="oe_highlight" type="object"/>
+                   <button name="cancel" string="Cancel" special="cancel"/>
+               </footer>
+           </form>
+       </field>
+   </record>
+
+    <!--Action for the leave report in wizard-->
+    <record id="action_open_leave_report_wizard" model="ir.actions.act_window">
+        <field name="name">Open Leave Wizard</field>
+        <field name="res_model">leave.report</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <!--Action for the leave report in wizard-->
+    <record id="action_open_student_report_wizard" model="ir.actions.act_window">
+        <field name="name">Open Student Wizard</field>
+        <field name="res_model">student.report</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding='UTF-8'?>
+<odoo>
+    <data noupdate="1">
+        <!--exam end date validation-->
+        <record id="exam_end_date_validation" model="ir.cron">
+            <field name="name">Exam: End Date Validation</field>
+            <field name="model_id" ref="model_school_exam"/>
+            <field name="active" eval="True"/>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="code">model.validate_exam_end_date()</field>
+        </record>
+
+        <!-- Archive the events-->
+        <record id="archive_occurred_events" model="ir.cron">
+            <field name="name">Event: Archive End Events</field>
+            <field name="model_id" ref="model_school_event"/>
+            <field name="active" eval="True"/>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="code">model.event_archive()</field>
+        </record>
+
+        <!-- Attendance Marking-->
+        <record id="check_student_present" model="ir.cron">
+            <field name="name">Student: Check Present Or Absent</field>
+            <field name="model_id" ref="model_school_leave"/>
+            <field name="active" eval="True"/>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="code">model.attendance_marking()</field>
+        </record>
+
+        <!-- Leave Status Marking-->
+        <record id="update_student_leave_status" model="ir.cron">
+            <field name="name">Student: Check Leave Status </field>
+            <field name="model_id" ref="model_school_leave"/>
+            <field name="active" eval="True"/>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="code">model.leave_status()</field>
+        </record>
+
+    </data>
+</odoo>

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <!--Template for the student report-->
+    <template id="leave_report_template">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                <div class="page">
+                    <h3 class="text-center">Leave Report</h3>
+                    <!--CLASS WISE-->
+                    <t t-if="report_type == 'Class Wise Report'">
+                        <t t-foreach="report.items()" t-as="class_data">
+                            <div>
+                                <h4 class="mt-4 mb-2">Class: <t t-esc="class_data[0]"/></h4>
+                                <table class="table table-bordered mt32">
+                                    <thead>
+                                        <tr class="text-center">
+                                            <th>Reg. No</th>
+                                            <th>Name</th>
+                                            <th>Last Name</th>
+                                            <th>Start Date</th>
+                                            <th>End Date</th>
+                                            <th>Reason</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <t t-foreach="class_data[1]" t-as="student">
+                                            <tr>
+                                                <td><t t-esc="student['registration_no']"/></td>
+                                                <td><t t-esc="student['name']"/></td>
+                                                <td><t t-esc="student['last_name']"/></td>
+                                                <td><t t-esc="student['start_date']"/></td>
+                                                <td><t t-esc="student['end_date']"/></td>
+                                                <td><t t-esc="student['reason']"/></td>
+                                            </tr>
+                                        </t>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </t>
+                    </t>
+                    <!--STUDENT WISE-->
+                    <t t-if="report_type == 'Student Wise Report'">
+                        <t t-foreach="report.items()" t-as="class_data">
+                            <div>
+                                <h4 class="mt-4 mb-2">Name: <t t-esc="class_data[0]"/></h4>
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr class="text-center">
+                                            <th>Reg. No</th>
+                                            <th>Start Date</th>
+                                            <th>End Date</th>
+                                            <th>Reason</th>
+                                            <th>Class</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <t t-foreach="class_data[1]" t-as="student">
+                                            <tr>
+                                                <td><t t-esc="student['registration_no']"/></td>
+                                                <td><t t-esc="student['start_date']"/></td>
+                                                <td><t t-esc="student['end_date']"/></td>
+                                                <td><t t-esc="student['reason']"/></td>
+                                                <td><t t-esc="student['class_name']"/></td>
+                                            </tr>
+                                        </t>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </t>
+                    </t>
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>

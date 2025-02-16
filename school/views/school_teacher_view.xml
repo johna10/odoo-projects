@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--Inherited res.partner List view-->
+    <record id="res_partner_inherit_list_view" model="ir.ui.view">
+        <field name="name">Purchase List View</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id"
+               ref="base.view_partner_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="// field[@name='phone']"
+                   position="after">
+                <field name="partner"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!--Inherited res.partner Form view-->
+    <record id="res_partner_inherit_form_view" model="ir.ui.view">
+        <field name="name">Partner Form View</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id"
+               ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <field name="email" position="attributes">
+                <attribute name="required">1</attribute>
+            </field>
+            <xpath expr="// field[@name='function']"
+                   position="after">
+                <field name="partner"/>
+                <field name="company_id"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!--res.partner Action-->
+    <record id="school_teacher_model_action" model="ir.actions.act_window">
+         <field name="name">School Teachers</field>
+         <field name="res_model">res.partner</field>
+         <field name="view_mode">list,form</field>
+    </record>
+
+    <!--Teacher Action-->
+    <record id="school_show_teachers_action" model="ir.actions.act_window">
+         <field name="name">Teachers</field>
+         <field name="res_model">res.partner</field>
+         <field name="view_mode">list,form</field>
+         <field name="domain">[('partner','=','teacher')]</field>
+         <field name="context">{"default_partner" : "teacher", }</field>
+    </record>
+
+    <!--Office Staff Action-->
+    <record id="school_show_officestaff_action" model="ir.actions.act_window">
+         <field name="name">Office Staff</field>
+         <field name="res_model">res.partner</field>
+         <field name="view_mode">list,form</field>
+         <field name="domain">[('partner','=','officestaff')]</field>
+         <field name="context">{"default_partner" : "officestaff", }</field>
+    </record>
+
+    <!--Hod Action-->
+    <record id="school_show_hod_action" model="ir.actions.act_window">
+         <field name="name">Head of Department</field>
+         <field name="res_model">res.partner</field>
+         <field name="view_mode">list,form</field>
+         <field name="domain">[('partner','=','hod')]</field>
+         <field name="context">{"default_partner" : "hod", }</field>
+    </record>
+
+</odoo>

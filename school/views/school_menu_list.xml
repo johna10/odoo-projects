@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--Menus-->
+    <menuitem id="school_menu_root" name="School">
+        <menuitem id="school_student_menu" name="Student" sequence="1">
+            <menuitem id="school_student_registration_menu_action"
+                      action="school_registration_student_model_action"
+                      name="Registration" groups="school.staff_group"/>
+            <menuitem id="school_student__menu_action" action="school_admission_taken_student_action" name="Students"/>
+        </menuitem>
+        <menuitem id="school_club_menu" name="Clubs" sequence="2">
+            <menuitem id="school_club_menu_action" action="school_club_model_action" name="Club"/>
+        </menuitem>
+        <menuitem id="school_event_menu" name="Events" sequence="3">
+            <menuitem id="school_event_menu_action" action="school_event_model_action" name="Event"/>
+        </menuitem>
+        <menuitem id="school_employee_menu" name="Employees" sequence="4" groups="school.staff_group">
+            <menuitem id="school_teacher_menu_action" action="school_show_teachers_action" name="Teachers"/>
+            <menuitem id="school_office_staff_menu_action"
+                      action="school_show_officestaff_action" name="Office Staff"/>
+            <menuitem id="school_hod_menu_action" action="school_show_hod_action" name="Hod"/>
+        </menuitem>
+        <menuitem id="school_leaves_menu" name="Leaves" sequence="5">
+            <menuitem id="school_leave_menu_action" action="school_leave_model_action" name="Leave"/>
+        </menuitem>
+        <menuitem id="school_exams_menu" name="Exams" sequence="6">
+            <menuitem id="school_exam_menu_action" action="school_exam_model_action" name="Exam"/>
+        </menuitem>
+        <menuitem id="school_report_menu" name="Report" sequence="7">
+            <menuitem id="school_leave_information_menu_action" action="action_open_leave_report_wizard" name="Leave Information"/>
+            <menuitem id="school_student_information_menu_action" action="action_open_student_report_wizard" name="Student Information"/>
+        </menuitem>
+        <menuitem id="school_configuration_menu" name="Configuration" sequence="8">
+            <menuitem id="school_manage_department_model_menu_action"
+                      action="school_department_model_action" name="Department"/>
+            <menuitem id="school_manage_class_model_menu_action"
+                      action="school_class_model_action" name="Class"/>
+            <menuitem id="school_manage_subject_model_menu_action"
+                      action="school_subject_model_action" name="Subject"/>
+            <menuitem id="school_manage_academic_model_menu_action"
+                      action="school_academic_model_action" name="Academic Year"/>
+        </menuitem>
+    </menuitem>
+</odoo>

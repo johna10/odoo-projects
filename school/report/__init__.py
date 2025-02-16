@@ -1,0 +1,2 @@
+from . import report_school_leave_report_template
+from . import report_school_student_report_template

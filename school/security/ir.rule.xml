@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+   <data>
+<!--Record rules for Student Groups-->
+        <!--Record rule for each student to see their own records on leave model-->
+         <record model="ir.rule" id="record_rule_for_leave_model">
+             <field name="name">Rule for Leave Model</field>
+             <field name="model_id" ref="school.model_school_leave"/>
+             <field name="groups" eval="[Command.link(ref('school.students_group'))]"/>
+             <field name="domain_force">[('student_id.user_id','=', user.id)]</field>
+             <field name="perm_read" eval="True"/>
+             <field name="perm_write" eval="True"/>
+             <field name="perm_create" eval="True"/>
+             <field name="perm_unlink" eval="True"/>
+        </record>
+
+        <!--Record rule for show only their own name in the list in student field.-->
+        <record model="ir.rule" id="record_rule_for_leave_model_individual_listing">
+            <field name="name">Rule for Show only corresponding Student</field>
+            <field name="model_id" ref="school.model_student_registration"/>
+            <field name="groups" eval="[Command.link(ref('school.students_group'))]"/>
+            <field name="domain_force">[('user_id','=', user.id)]</field>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+        </record>
+
+        <!--Record rule for each student to see their own records on leave model-->
+         <record model="ir.rule" id="record_rule_for_event_model_for_students">
+             <field name="name">Rule for Event Model for Student</field>
+             <field name="model_id" ref="school.model_school_event"/>
+             <field name="groups" eval="[Command.link(ref('school.students_group'))]"/>
+             <field name="domain_force">[('club_ids.students_ids.user_id','=', user.id)]</field>
+             <field name="perm_read" eval="True"/>
+             <field name="perm_write" eval="True"/>
+             <field name="perm_create" eval="True"/>
+             <field name="perm_unlink" eval="True"/>
+        </record>
+
+        <!--Record rule for each student to see their own records on exam model-->
+         <record model="ir.rule" id="record_rule_for_exam_model_for_students">
+             <field name="name">Rule for Exam Model for Student</field>
+             <field name="model_id" ref="school.model_school_exam"/>
+             <field name="groups" eval="[Command.link(ref('school.students_group'))]"/>
+             <field name="domain_force">[('class_id.student_ids.user_id','=', user.id)]</field>
+             <field name="perm_read" eval="True"/>
+             <field name="perm_write" eval="True"/>
+             <field name="perm_create" eval="True"/>
+             <field name="perm_unlink" eval="True"/>
+        </record>
+
+       <!--Record rule for each student to see their own records on class model-->
+         <record model="ir.rule" id="record_rule_for_class_model_for_students">
+             <field name="name">Rule for Class Model for Student</field>
+             <field name="model_id" ref="school.model_school_class"/>
+             <field name="groups" eval="[Command.link(ref('school.students_group'))]"/>
+             <field name="domain_force">[('student_ids.user_id','=', user.id)]</field>
+             <field name="perm_read" eval="True"/>
+             <field name="perm_write" eval="True"/>
+             <field name="perm_create" eval="True"/>
+             <field name="perm_unlink" eval="True"/>
+        </record>
+
+       <!--Record rule for each student to see their own records on student registration model-->
+         <record model="ir.rule" id="record_rule_for_registration_model_for_students">
+             <field name="name">Rule for Registration Model for Student</field>
+             <field name="model_id" ref="school.model_student_registration"/>
+             <field name="groups" eval="[Command.link(ref('school.students_group'))]"/>
+             <field name="domain_force">[('user_id','=', user.id)]</field>
+             <field name="perm_read" eval="True"/>
+             <field name="perm_write" eval="False"/>
+             <field name="perm_create" eval="True"/>
+             <field name="perm_unlink" eval="True"/>
+        </record>
+
+<!--Record rules for Teacher Groups-->
+       <!--Record rule for teacher to create leave for student in corresponding class-->
+         <record model="ir.rule" id="record_rule_for_registration_model_for_teachers">
+             <field name="name">Rule for Registration Model for Teachers</field>
+             <field name="model_id" ref="school.model_student_registration"/>
+             <field name="groups" eval="[Command.link(ref('school.teachers_group'))]"/>
+             <field name="domain_force">[('class_id.class_teacher_id.user_id','=', user.id)]</field>
+             <field name="perm_read" eval="True"/>
+             <field name="perm_write" eval="False"/>
+             <field name="perm_create" eval="True"/>
+             <field name="perm_unlink" eval="True"/>
+        </record>
+
+<!--Record rules for Multi Company -->
+         <!--Multi Company rule for student registration model-->
+         <record model="ir.rule" id="record_rule_for_student_registration_multi_company">
+             <field name="name">Rule For Student Registration Multi Company</field>
+             <field name="model_id" ref="school.model_student_registration"/>
+             <field name="domain_force">[('company_id', 'in', company_ids+[False])]</field>
+             <field name="perm_read" eval="True"/>
+             <field name="perm_write" eval="False"/>
+             <field name="perm_create" eval="True"/>
+             <field name="perm_unlink" eval="True"/>
+         </record>
+
+       <!--Multi Company rule for subject model-->
+       <record model="ir.rule" id="record_rule_for_subject_model_multi_company">
+             <field name="name">Rule For Subject Multi Company</field>
+             <field name="model_id" ref="school.model_school_subject"/>
+             <field name="domain_force">[('company_id', 'in', company_ids+[False])]</field>
+             <field name="perm_read" eval="True"/>
+             <field name="perm_write" eval="False"/>
+             <field name="perm_create" eval="True"/>
+             <field name="perm_unlink" eval="True"/>
+       </record>
+
+       <!--Multi Company rule for paper model-->
+       <record model="ir.rule" id="record_rule_for_paper_model_multi_company">
+             <field name="name">Rule For Paper Multi Company</field>
+             <field name="model_id" ref="school.model_school_paper"/>
+             <field name="domain_force">[('company_id', 'in', company_ids+[False])]</field>
+             <field name="perm_read" eval="True"/>
+             <field name="perm_write" eval="False"/>
+             <field name="perm_create" eval="True"/>
+             <field name="perm_unlink" eval="True"/>
+       </record>
+
+       <!--Multi Company rule for leave model-->
+       <record model="ir.rule" id="record_rule_for_leaves_model_multi_company">
+             <field name="name">Rule For Leaves Multi Company</field>
+             <field name="model_id" ref="school.model_school_leave"/>
+             <field name="domain_force">[('company_id', 'in', company_ids+[False])]</field>
+             <field name="perm_read" eval="True"/>
+             <field name="perm_write" eval="False"/>
+             <field name="perm_create" eval="True"/>
+             <field name="perm_unlink" eval="True"/>
+       </record>
+
+       <!--Multi Company rule for exam model-->
+       <record model="ir.rule" id="record_rule_for_exam_model_multi_company">
+             <field name="name">Rule For Exam Multi Company</field>
+             <field name="model_id" ref="school.model_school_exam"/>
+             <field name="domain_force">[('company_id', 'in', company_ids+[False])]</field>
+             <field name="perm_read" eval="True"/>
+             <field name="perm_write" eval="False"/>
+             <field name="perm_create" eval="True"/>
+             <field name="perm_unlink" eval="True"/>
+       </record>
+
+       <!--Multi Company rule for event model-->
+       <record model="ir.rule" id="record_rule_for_event_model_multi_company">
+             <field name="name">Rule For Event Multi Company</field>
+             <field name="model_id" ref="school.model_school_event"/>
+             <field name="domain_force">[('company_id', 'in', company_ids+[False])]</field>
+             <field name="perm_read" eval="True"/>
+             <field name="perm_write" eval="False"/>
+             <field name="perm_create" eval="True"/>
+             <field name="perm_unlink" eval="True"/>
+       </record>
+
+       <!--Multi Company rule for department model-->
+       <record model="ir.rule" id="record_rule_for_department_model_multi_company">
+             <field name="name">Rule For Department Company</field>
+             <field name="model_id" ref="school.model_school_department"/>
+             <field name="domain_force">[('company_id', 'in', company_ids+[False])]</field>
+             <field name="perm_read" eval="True"/>
+             <field name="perm_write" eval="False"/>
+             <field name="perm_create" eval="True"/>
+             <field name="perm_unlink" eval="True"/>
+       </record>
+
+       <!--Multi Company rule for club model-->
+       <record model="ir.rule" id="record_rule_for_club_model_multi_company">
+             <field name="name">Rule For Club Multi Company</field>
+             <field name="model_id" ref="school.model_school_club"/>
+             <field name="domain_force">[('company_id', 'in', company_ids+[False])]</field>
+             <field name="perm_read" eval="True"/>
+             <field name="perm_write" eval="False"/>
+             <field name="perm_create" eval="True"/>
+             <field name="perm_unlink" eval="True"/>
+       </record>
+
+       <!--Multi Company rule for class model-->
+       <record model="ir.rule" id="record_rule_for_class_model_multi_company">
+             <field name="name">Rule For Class Multi Company</field>
+             <field name="model_id" ref="school.model_school_class"/>
+             <field name="domain_force">[('company_id', 'in', company_ids+[False])]</field>
+             <field name="perm_read" eval="True"/>
+             <field name="perm_write" eval="False"/>
+             <field name="perm_create" eval="True"/>
+             <field name="perm_unlink" eval="True"/>
+       </record>
+
+       <!--Multi Company rule for academic model-->
+       <record model="ir.rule" id="record_rule_for_academic_model_multi_company">
+             <field name="name">Rule For Academic Multi Company</field>
+             <field name="model_id" ref="school.model_school_academic"/>
+             <field name="domain_force">[('company_id', 'in', company_ids+[False])]</field>
+             <field name="perm_read" eval="True"/>
+             <field name="perm_write" eval="False"/>
+             <field name="perm_create" eval="True"/>
+             <field name="perm_unlink" eval="True"/>
+       </record>
+
+       <!--Multi Company rule for partner model-->
+       <record model="ir.rule" id="record_rule_for_partner_model_multi_company">
+             <field name="name">Rule For Partner Multi Company</field>
+             <field name="model_id" ref="school.model_res_partner"/>
+             <field name="domain_force">[('company_id', 'in', company_ids+[False])]</field>
+             <field name="perm_read" eval="True"/>
+             <field name="perm_write" eval="False"/>
+             <field name="perm_create" eval="True"/>
+             <field name="perm_unlink" eval="True"/>
+       </record>
+   </data>
+</odoo>
