@@ -5,7 +5,7 @@ from odoo.exceptions import UserError
 
 
 class StudentRegistration(models.Model):
-    """This model is used to register new student."""
+    """This model is used to register new student and take admission."""
     _name = 'student.registration'
     _inherit = 'mail.thread'
 

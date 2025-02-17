@@ -123,6 +123,9 @@ class SchoolEventsDynamicSnippets(http.Controller):
         print('Inside the individual event showing')
         print('event_id',page)
 
+
+        print('THE COMMIT')
+
         return request.render('school.thankyou_data')
 
 
