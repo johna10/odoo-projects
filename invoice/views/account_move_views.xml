@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--Inherited account.move Form view-->
+    <record id="account_move_inherit_form_view" model="ir.ui.view">
+        <field name="name">Invoice Form View</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id"
+               ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button class="oe_stat_button"
+                        name="get_sales_orders"
+                        type="object"
+                        icon="fa-pencil-square-o"
+                        invisible="sales_order_count == 0 or move_type not in ('out_invoice',
+                         'out_refund', 'in_invoice', 'in_refund', 'out_receipt', 'in_receipt')">
+                    <field string="Sale Orders" name="sales_order_count" widget="statinfo"/>
+                </button>
+            </xpath>
+            <xpath expr="//field[@name='partner_id']" position="after">
+                <group>
+                    <field name="related_sale_order_ids" widget="many2many_tags" invisible="state == 'posted'"
+                           domain="[('partner_id', '=', partner_id),('invoice_status', '=', 'to invoice')]"/>
+                    <field name="related_added_sale_order_ids" widget="many2many_tags" invisible="state == 'draft'"
+                           domain="[('partner_id', '=', partner_id),('invoice_status', '=', 'to invoice')]"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>
