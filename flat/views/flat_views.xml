@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--list view-->
+    <record id="flat_list_view" model="ir.ui.view">
+        <field name="name">Flat</field>
+        <field name="model">flat</field>
+        <field name="arch" type="xml">
+            <list string="FlatList">
+                <field name="name"/>
+                <field name="description"/>
+                <field name="amount"/>
+            </list>
+        </field>
+    </record>
+
+    <!--Form View-->
+    <record id="flat_form_view" model="ir.ui.view">
+        <field name="name">Flat</field>
+        <field name="model">flat</field>
+        <field name="arch" type="xml">
+            <form string="FlatForm">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="description"/>
+                            <field name="amount"/>
+                        </group>
+                        <notebook>
+                            <page string="Flats">
+                                <field name="flat_management_id"/>
+                            </page>
+                        </notebook>
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+    <!--Action-->
+    <record id="flat_model_action" model="ir.actions.act_window">
+         <field name="name">Flat</field>
+         <field name="res_model">flat</field>
+         <field name="view_mode">list,form</field>
+    </record>
+</odoo>
