@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--Menus-->
+<!--    Menu for the registration-->
+    <menuitem id="hospital_menu_root" name="Hospital">
+        <menuitem id="hospital_first_level_menu1" name="Patient">
+            <menuitem id="hospital_registration_model_menu_action" action="registration_model_action" name="Registration"/>
+        </menuitem>
+        <menuitem id="hospital_second_level_menu1" name="Tickets">
+            <menuitem id="hospital_op_model_menu_action" action="op_ticket_model_action" name="Op Ticket"/>
+        </menuitem>
+        <menuitem id="hospital_third_level_menu1" name="Consultation">
+            <menuitem id="hospital_consultation_model_menu_action" action="consultation_model_action" name="Consult"/>
+        </menuitem>
+    </menuitem>
+</odoo>

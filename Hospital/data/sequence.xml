@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="my_sequence_id_opticket" model="ir.sequence">
+            <field name="name">My Sequence for Op ticket</field>
+            <field name="code">my_sequence_code_opticket</field>
+            <field name="prefix">OP-TICKET-</field>
+            <field name="padding">3</field>
+            <field name="number_next">1</field>
+        </record>
+
+        <record id="my_sequence_id_consultation" model="ir.sequence">
+            <field name="name">My Sequence for consultation</field>
+            <field name="code">my_sequence_code_consultation</field>
+            <field name="prefix">CONSULT-</field>
+            <field name="padding">3</field>
+            <field name="number_next">1</field>
+        </record>
+    </data>
+</odoo>
