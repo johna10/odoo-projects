@@ -10,7 +10,7 @@ var SchoolWebsiteEvents = publicWidget.Widget.extend({
 
         willStart: async function () {
             console.log('inside willstart')
-            const data = await rpc('/top_selling_products', {})
+            const data = await rpc('/school/events/', {})
             console.log('data -',data)
 
             const events = data
@@ -23,11 +23,11 @@ var SchoolWebsiteEvents = publicWidget.Widget.extend({
             console.log('start start')
             const refEl = this.$el.find("#top_products_carousel")
 
-            const eventss = this.events
-            console.log(eventss)
+            const all_events = this.events
+            console.log(all_events)
 
             refEl.html(renderToElement('school.products_category_wise',{
-            eventss,
+            all_events,
             }))
             console.log('start end')
         }

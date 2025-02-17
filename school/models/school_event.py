@@ -15,6 +15,7 @@ class SchoolEvent(models.Model):
     end_date = fields.Datetime(string='End Date', default=today())
     responsible_person_id = fields.Many2one("res.partner", string="Responsible", index=True, tracking=True,
                                          domain=[('partner','=','hod')])
+    photo = fields.Image(string="")
     venue = fields.Char(string='Venue')
     description = fields.Char(string='Description')
     current_day = fields.Datetime.today()

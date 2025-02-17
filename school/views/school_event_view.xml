@@ -24,6 +24,7 @@
                            nolabel="1" statusbar_visible="ready,ongoing,end" options="{'clickable':1}"/>
                 </header>
                 <sheet>
+                    <field name="photo" widget="image" class="oe_avatar" nolabel="1"/>
                     <group>
                         <group>
                             <field name="name"/>

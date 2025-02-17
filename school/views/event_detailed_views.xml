@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="school_individual_event_template" name="Thankyou">
+       <t t-call="website.layout">
+           <div id="wrapping" class="oe_structure oe_empty">
+               <section class="s_website_form" data-vcss="001" data-snippet="s_website_form">
+                   <div class="container border border-danger" style="margin-top:150px;">
+                       <Center><h3>This is for individual Event</h3></Center>
+                       <div class="container">
+                           <div class="first border border-danger"><t t-esc="event['id']"></t></div>
+                           <div class="first border border-danger"><t t-esc="event['name']"></t></div>
+                           <div class="first border border-danger"><t t-esc="event['venue']"></t></div>
+                       </div>
+                   </div>
+               </section>
+           </div>
+       </t>
+    </template>
+</odoo>

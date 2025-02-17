@@ -31,6 +31,7 @@
         'views/school_papers_views.xml',
         'views/website_event_views.xml',
         'views/website_menu_views.xml',
+        'views/event_detailed_views.xml',
         'views/school_menu_list.xml',
         'report/leave_report_template.xml',
         'report/student_report_template.xml',
@@ -43,7 +44,7 @@
         ],
         'web.assets_frontend': [
             'school/static/src/js/school_website_student.js',
-            'school/static/src/js/school_website_events.js',
+            'school/static/src/js/school_website_events_snippet.js',
             'school/static/src/xml/basic.xml',
         ],
     },

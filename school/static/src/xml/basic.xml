@@ -4,27 +4,27 @@
    <t t-name="school.products_category_wise">
        <div id="wrapper" class="oe_structure oe_empty">
        <div class="container border border-success">
-           <t id="eu_id" t-foreach="eventss" t-as="each" t-key="each.id">
-               <a t-attf-href="/event/#{each.id}">
-                                  <div class="owl-item border border-primary" id="card_id"
+           <t id="eu_id" t-foreach="all_events" t-as="event" t-key="event.id">
+               <a t-attf-href="/event/#{event.id}">
+                   <div class="owl-item border border-primary" id="card_id"
                                        style="width: 300px; height: 300px; margin-right: 20px; float: left;">
-                   <div class="container border border-danger"
-                        style="width:100%; height:70%; background-color:  #e699ff;">
-                       <div id="SAM" class="container border border-danger"
-                            style="margin-top:30%; text-align:center; font-size:45px;">
-                           <t t-esc="each.name"/>
-                           <div id="VALUE"><t t-esc="each.id"/></div>
+                       <div class="container border border-danger"
+                                        style="width:100%; height:70%; background-color:  #e699ff;">
+                           <div id="SAM" class="container border border-danger"
+                                            style="margin-top:30%; text-align:center; font-size:45px;">
+                               <t t-esc="event.name"/>
+                               <div id="VALUE"><t t-esc="event.id"/></div>
+                           </div>
+                       </div>
+                       <div>
+                           <h6 style="float:left;"> Start Date :</h6>
+                           <t t-esc="event.start_date"/>
+                       </div>
+                       <div>
+                           <h6 style="float:left;"> Venue :</h6>
+                           <t t-esc="event.venue"/>
                        </div>
                    </div>
-                                      <div>
-                       <h6 style="float:left;"> Start Date :</h6>
-                                          <t t-esc="each.start_date"/>
-                   </div>
-                                      <div>
-                       <h6 style="float:left;"> Venue :</h6>
-                                          <t t-esc="each.venue"/>
-                   </div>
-               </div>
                 </a>
            </t>
        </div>
