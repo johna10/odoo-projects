@@ -75,7 +75,7 @@
                                         <div>
                                             <input id="email" type="email" class="form-control mt-3"
                                                    style="width:300px;" name="email" required="1"/>
-                                             <div id="email_warning" style="color:red; width:300px;">Oooooo</div>
+<!--                                             <div id="email_warning" style="color:red; width:300px;">Oooooo</div>-->
                                         </div>
                                     </div>
                                 </div>

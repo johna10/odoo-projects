@@ -4,9 +4,7 @@
     <template id="school_website_events_template" name="School Events">
         <section class="school_website_event_snippet">
            <div class="ref-arrival-content border border-danger" style="">
-                <p class="ref-section_head ref-centerhead__underline ref-head--primary"
-                   style="color: #0d5272;">List of events from school model
-                </p>
+               <h3 style="text-align: center;">Latest Four Events</h3>
             </div>
             <div id="top_products_carousel"/>
         </section>

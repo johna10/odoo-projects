@@ -97,13 +97,36 @@ class HttpController(http.Controller):
 
 class SchoolEventsDynamicSnippets(http.Controller):
     """This class is used to pass the values to the dynamic snippets."""
-    @http.route(['/total_product_sold'], type="json", auth="public")
+    @http.route(['/top_selling_products'], type="json", auth="public")
     def sold_total(self):
-        sale_obj = request.env['sale.order'].sudo().search([
-           ('state', 'in', ['done', 'sale']),
-        ])
-        total_sold = sum(sale_obj.mapped('order_line.product_uom_qty'))
-        return total_sold
+        print('Inside the event controller')
+        events = request.env['school.event'].sudo().search([])
+        event_data = [{
+            'id': event.id,
+            'name': event.name,
+            'club_ids': event.club_ids.ids,
+            'state': event.state,
+            'start_date':event.start_date,
+            'end_date': event.end_date,
+            'venue':event.venue,
+            'responsible_person_id': event.responsible_person_id
+        } for event in events]
+
+        print('Number of events', len(event_data))
+        print('Events----->',event_data)
+        print('type of Events', type(event_data))
+
+        return event_data
+
+    @http.route(['/event/<int:page>'], type="http", auth="public", website=True)
+    def show_individual_event(self, page):
+        print('Inside the individual event showing')
+        print('event_id',page)
+
+        return request.render('school.thankyou_data')
+
+
+
 
 
 

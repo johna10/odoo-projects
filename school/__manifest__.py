@@ -44,6 +44,7 @@
         'web.assets_frontend': [
             'school/static/src/js/school_website_student.js',
             'school/static/src/js/school_website_events.js',
+            'school/static/src/xml/basic.xml',
         ],
     },
 }
