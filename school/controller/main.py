@@ -116,7 +116,7 @@ class SchoolEventsDynamicSnippets(http.Controller):
         event = {
             'id': clicked_event.id,
             'name': clicked_event.name,
-            'club_id': clicked_event.club_id.name,
+            'club_id': clicked_event.club_id.name if clicked_event.club_id.name else False,
             'state': clicked_event.state,
             'start_date':clicked_event.start_date,
             'end_date': clicked_event.end_date,

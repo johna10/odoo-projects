@@ -21,7 +21,7 @@ class SchoolClubs(models.Model):
         """Count & Show the number of event with respect to the club."""
         for record in self:
             record.events_count = self.env['school.event'].search_count(
-                [('club_ids', 'in', self.ids)])
+                [('club_id', 'in', self.ids)])
 
     def get_events(self):
         """Show all events linked to the club in list and form view."""
