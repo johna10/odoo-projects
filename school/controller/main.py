@@ -99,37 +99,31 @@ class SchoolEventsDynamicSnippets(http.Controller):
     """This class is used to pass the values to the dynamic snippets."""
     @http.route(['/school/events/'], type="json", auth="public")
     def school_events(self):
-        print('Inside the event controller')
-        events = request.env['school.event'].sudo().search([],order="start_date asc", limit=4)
+        """Method used to fetch the events and return from the school.event model"""
+        events = request.env['school.event'].sudo().search([],order="start_date asc", limit=15)
         event_data = [{
             'id': event.id,
             'name': event.name,
-            'club_ids': event.club_ids.ids,
-            'state': event.state,
             'start_date':event.start_date,
-            'end_date': event.end_date,
-            'venue':event.venue,
-            'responsible_person_id': event.responsible_person_id
+            'venue':event.venue
         } for event in events]
-
-        print('Number of events', len(event_data))
-        print('Events----->',event_data)
-        print('type of Events', type(event_data))
-
         return event_data
 
     @http.route(['/event/<int:page>'], type="http", auth="public", website=True)
     def show_individual_event(self, page):
-        print('Inside the individual event showing')
-        print('event_id',page)
-
+        """Method used to fetch the compete details of a single event clicked."""
         clicked_event = request.env['school.event'].browse(page)
-        print('----------------------')
-        print('Event clicked :',clicked_event)
-        print('clicked Event Name : ',clicked_event.name)
-        print('THE COMMIT')
-
-        return request.render('school.school_individual_event_template', {'event':clicked_event})
+        event = {
+            'id': clicked_event.id,
+            'name': clicked_event.name,
+            'club_id': clicked_event.club_id.name,
+            'state': clicked_event.state,
+            'start_date':clicked_event.start_date,
+            'end_date': clicked_event.end_date,
+            'venue':clicked_event.venue,
+            'responsible_person_id': clicked_event.responsible_person_id.name
+        }
+        return request.render('school.school_individual_event_template', {'event':event})
 
 
 

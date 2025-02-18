@@ -2,40 +2,32 @@ import { cookie } from "@web/core/browser/cookie";
 import publicWidget from '@web/legacy/js/public/public_widget';
 import { rpc } from "@web/core/network/rpc";
 import { renderToElement } from "@web/core/utils/render";
-
-console.log('events start')
-
+export function _chunk(array, size) {
+    const result = [];
+    for (let i = 0; i < array.length; i += size) {
+        result.push(array.slice(i, i + size));
+    }
+    return result;
+}
 var SchoolWebsiteEvents = publicWidget.Widget.extend({
         selector: '.school_website_event_snippet',
-
         willStart: async function () {
-            console.log('inside willstart')
             const data = await rpc('/school/events/', {})
-            console.log('data -',data)
-
             const events = data
             Object.assign(this, {
                 events
             })
-            console.log('wiil start end')
         },
         start: function () {
-            console.log('start start')
-            const refEl = this.$el.find("#top_products_carousel")
-
-            const all_events = this.events
-            console.log(all_events)
-
-            refEl.html(renderToElement('school.products_category_wise',{
-            all_events,
+            const refEl = this.$el.find("#latest_school_events")
+            var chunks = _chunk(this.events, 4)
+            chunks[0].is_active = true
+            refEl.html(renderToElement('school.school_latest_events',{
+            chunks
             }))
-            console.log('start end')
         }
     });
-
-
 publicWidget.registry.SchoolWebsiteEvents = SchoolWebsiteEvents;
-console.log('event end')
 return SchoolWebsiteEvents;
 
 

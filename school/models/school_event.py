@@ -9,7 +9,7 @@ class SchoolEvent(models.Model):
     _inherit = ['mail.thread', 'mail.activity.mixin']
 
     name = fields.Char(string='Name of Event')
-    club_ids = fields.Many2many('school.club', string='Club')
+    club_id = fields.Many2one('school.club', string='Club')
     state = fields.Selection(string='Status', selection=[('ready','Ready'),('ongoing','Ongoing'),('end','Ended')])
     start_date = fields.Datetime(string='Start Date', default=today())
     end_date = fields.Datetime(string='End Date', default=today())

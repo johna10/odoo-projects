@@ -3,17 +3,18 @@
     <!--Template for showing the events in website-->
     <template id="school_website_events_template" name="School Events">
         <section class="school_website_event_snippet">
-           <div class="ref-arrival-content border border-danger" style="">
+           <div class="ref-arrival-content" style="">
                <h3 style="text-align: center;">Latest Four Events</h3>
             </div>
-            <div id="top_products_carousel"/>
+            <div id="latest_school_events" style="border border-danger"/>
         </section>
     </template>
+
     <!--Snippet of Template for showing the events in website-->
     <template id="event_snippet" inherit_id="website.snippets" name="School Event Snippet">
         <xpath expr="//t[@id='installed_snippets_hook']"
                position="after">
-            <t t-snippet="school.school_website_events_template"/>
+            <t t-snippet="school.school_website_events_template" string="School Events" t-thumbnail="school/static/img/school_events.svg"/>
         </xpath>
     </template>
 </odoo>

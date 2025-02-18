@@ -4,14 +4,76 @@
        <t t-call="website.layout">
            <div id="wrapping" class="oe_structure oe_empty">
                <section class="s_website_form" data-vcss="001" data-snippet="s_website_form">
-                   <div class="container border border-danger" style="margin-top:150px;">
-                       <Center><h3>This is for individual Event</h3></Center>
-                       <div class="container">
-                           <div class="first border border-danger"><t t-esc="event['id']"></t></div>
-                           <div class="first border border-danger"><t t-esc="event['name']"></t></div>
-                           <div class="first border border-danger"><t t-esc="event['venue']"></t></div>
-                       </div>
-                   </div>
+                   <div class="container">
+                    <form action='/webform/submit' enctype="multipart/form-data" class="o_mark_required" data-mark="*"
+                          data-model_name="" data-success-page="" method="post" target="_blank">
+                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                        <div class="s_website_form_rows row s_col_no_bgcolor">
+                            <div class="border" style="padding:50px;  border-radius: 25px; border-color: #73AD21;">
+
+                                <div class="first container border" style="">
+                                    <div class="container " style="">
+                                        <div class="first " style="text-align:center; width:500px; margin:auto;">
+                                            <h3><t t-esc="event['name']"></t></h3>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="second container" style="margin-top: 50px;">
+                                    <div class="container " style="">
+                                        <div class="" style="float:left;  padding-right:80px; margin-left: 240px;">
+                                        <div>
+                                            <span class="s_website_form_label_content"
+                                                  style="">Date
+                                            </span>
+                                            <div>
+                                                <h6 id="start_date" type="text" class="form-control mt-3"
+                                                       style="width:300px;" name="start_date" required="1">
+                                                    Start Date :<t t-esc="event['start_date']"></t><br></br>
+                                                    End Date :<t t-esc="event['end_date']"></t></h6>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <span class="s_website_form_label_content"
+                                                  style="padding-right:30px">Responsible
+                                            </span>
+                                            <div>
+                                                <h6 id="start_date" type="text" class="form-control mt-3"
+                                                       style="width:300px;" name="start_date" required="1">
+                                                     <t t-esc="event['responsible_person_id']"></t></h6>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="" style="float:left;">
+                                        <div>
+                                            <span class="s_website_form_label_content"
+                                                  style="padding-right:30px">Clubs
+                                            </span>
+                                            <div>
+                                                <h6 id="start_date" type="text" class="form-control mt-3"
+                                                       style="width:300px;" name="start_date" required="1">
+                                                     <t t-esc="event['club_id']"></t></h6>
+                                            </div>
+                                        </div>
+                                        <br></br>
+                                        <div>
+                                            <span class="s_website_form_label_content"
+                                                  style="padding-right:30px">Venue
+                                            </span>
+                                            <div>
+                                                <h6 id="start_date" type="text" class="form-control mt-3"
+                                                       style="width:300px;" name="start_date" required="1">
+                                                     <t t-esc="event['venue']"></t></h6>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
                </section>
            </div>
        </t>
