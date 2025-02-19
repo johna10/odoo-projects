@@ -9,21 +9,30 @@ export function _chunk(array, size) {
     }
     return result;
 }
+
+function _generateUniqueId() {
+  return Date.now() + Math.random().toString(36).substr(2);;
+}
+
 var SchoolWebsiteEvents = publicWidget.Widget.extend({
         selector: '.school_website_event_snippet',
         willStart: async function () {
             const data = await rpc('/school/events/', {})
             const events = data
+            const unique_id = _generateUniqueId()
             Object.assign(this, {
-                events
+                events,
+                unique_id
             })
         },
         start: function () {
             const refEl = this.$el.find("#latest_school_events")
             var chunks = _chunk(this.events, 4)
             chunks[0].is_active = true
+            var carousal_unique_id = this.unique_id
             refEl.html(renderToElement('school.school_latest_events',{
-            chunks
+            chunks,
+            carousal_unique_id
             }))
         }
     });

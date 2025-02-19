@@ -2,7 +2,6 @@ import { cookie } from "@web/core/browser/cookie";
 import publicWidget from '@web/legacy/js/public/public_widget';
 import { rpc } from "@web/core/network/rpc";
 
-console.log('Student start')
 
 publicWidget.registry.WebsiteCustomerContactRequestForm = publicWidget.Widget.extend({
    selector: "#wrap",
@@ -32,7 +31,5 @@ publicWidget.registry.WebsiteCustomerContactRequestForm = publicWidget.Widget.ex
      }
 })
 
-console.log('Student end')
-console.log('--------------------------------------------------------------------------------------------------------------')
 
 

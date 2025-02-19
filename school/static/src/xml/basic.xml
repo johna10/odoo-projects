@@ -5,13 +5,11 @@
 <!--    ORIGINAL BY ME-->
    <t t-name="school.school_latest_events">
 
-       <div id="course_carousel" class="container carousel slide" data-bs-ride="carousel" t-att-data-bs-interval="interval">
+       <div t-attf-id="{{carousal_unique_id}}" class="container carousel slide" data-bs-ride="carousel" t-att-data-bs-interval="interval">
        	<div class="carousel-inner row w-100 mx-auto" role="listbox">
             <t t-foreach="chunks" t-as="chunk" t-key="chunk.id">
                     <div t-att-class="chunk.is_active ? 'carousel-item active' : 'carousel-item'">
-                        <div class="row">
-
-                               <div id="wrapper" class="oe_structure oe_empty">
+<!--                        <div class="row">-->
                                    <div class="container" style="padding: 10px;
                                         box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); background-color:  #e6e6e6;">
 
@@ -39,16 +37,15 @@
                                            </a>
                                        </t>
                                    </div>
-                               </div>
-                    </div>
+<!--                               </div>-->
                 </div>
             </t>
         </div>
-           <a t-attf-href="#course_carousel" class="carousel-control-prev" data-bs-slide="prev" role="button" aria-label="Previous" title="Previous">
+           <a t-att-href="'#' + carousal_unique_id" class="carousel-control-prev" data-bs-slide="prev" role="button" aria-label="Previous" title="Previous">
         	<span class="fa fa-chevron-circle-left fa-2x"/>
             <span class="visually-hidden">Previous</span>
        </a>
-       <a t-attf-href="#course_carousel" class="carousel-control-next" data-bs-slide="next" role="button" aria-label="Next" title="Next">
+       <a t-att-href="'#' + carousal_unique_id" class="carousel-control-next" data-bs-slide="next" role="button" aria-label="Next" title="Next">
         	<span class="fa fa-chevron-circle-right fa-2x"/>
         	<span class="visually-hidden">Next</span>
        </a>

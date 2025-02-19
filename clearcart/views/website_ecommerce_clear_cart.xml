@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="cart_lines_extends" inherit_id="website_sale.cart_lines">
+        <xpath expr="//div[hasclass('js_cart_lines')]" position="after">
+        <div>
+            <p>
+                helloo alan
+
+            </p>
+        </div>
+        </xpath>
+    </template>
+</odoo>
