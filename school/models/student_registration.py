@@ -84,17 +84,17 @@ class StudentRegistration(models.Model):
         user_ids = self.env['res.users'].search(['|', ('name', '=', self.full_name), ('email', '=', self.email)])
         if self.state == 'registration' and not user_ids:
             user = self.env['res.users'].create([{
+                'name': self.full_name,
+                'login': self.email,
+                'partner_id': self.env['res.partner'].create({
                     'name': self.full_name,
-                    'login': self.email,
-                    'partner_id': self.env['res.partner'].create({
-                        'name': self.full_name,
-                        'email': self.email,
-                        'partner': 'student',
-                    }).id,
-                    'groups_id': [
-                        Command.link(self.env.ref('base.group_user').id),
-                        Command.link(self.env.ref('school.students_group').id)],
-                }])
+                    'email': self.email,
+                    'partner': 'student',
+                }).id,
+                'groups_id': [
+                    Command.link(self.env.ref('base.group_user').id),
+                    Command.link(self.env.ref('school.students_group').id)],
+            }])
             self.user_id = user.id
 
     def action_report(self):

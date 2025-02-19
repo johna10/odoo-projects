@@ -65,14 +65,8 @@ class WebsiteHttpController(http.Controller):
     @http.route(['/school/events/'], type="json", auth="public")
     def school_events(self):
         """Method used to fetch the events and return from the school.event model"""
-        events = request.env['school.event'].sudo().search([],order="start_date asc", limit=15)
-        event_data = [{
-            'id': event.id,
-            'name': event.name,
-            'start_date':event.start_date,
-            'venue':event.venue
-        } for event in events]
-        return event_data
+        events = request.env['school.event'].sudo().search_read([],['id','name','start_date','venue'],order="start_date asc", limit=15)
+        return events
 
     @http.route(['/event/<int:page>'], type="http", auth="public", website=True)
     def show_individual_event(self, page):
