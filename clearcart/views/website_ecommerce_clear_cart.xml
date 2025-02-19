@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
     <template id="cart_lines_extends" inherit_id="website_sale.cart_lines">
-        <xpath expr="//div[hasclass('js_cart_lines')]" position="after">
-        <div>
-            <p>
-                helloo alan
-
-            </p>
-        </div>
+        <xpath expr="//div[contains(@class, 'd-flex flex-column align-items-end')]" position="after">
+            <div class="mt-2">
+                <button class="js_delete_product btn btn-primary" style="height: 100%; width: 45px;">
+                    <i class="material-icons">&#xe872;</i>
+                </button>
+            </div>
         </xpath>
     </template>
 </odoo>
