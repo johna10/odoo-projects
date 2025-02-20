@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-    <template id="cart_lines_extends" inherit_id="website_sale.cart_lines">
-        <xpath expr="//div[contains(@class, 'd-flex flex-column align-items-end')]" position="after">
+    <template id="clear_cart_button" inherit_id="website_sale.cart" customize_show="True" name="Clear Cart">
+        <xpath expr="//div[contains(@class, 'clearfix')]" position="before">
             <div class="mt-2">
-                <button class="js_delete_product btn btn-primary" style="height: 100%; width: 45px;">
+                <button id="clear_cart_button" class="js_delete_all_product btn btn-primary" invisible="hide" style="width: 200px;"> Clear Cart
                     <i class="material-icons">&#xe872;</i>
                 </button>
             </div>

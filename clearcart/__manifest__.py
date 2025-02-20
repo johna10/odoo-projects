@@ -9,5 +9,10 @@
     'data': [
         'views/website_ecommerce_clear_cart.xml',
     ],
+    'assets': {
+        'web.assets_frontend': [
+            'clearcart/static/src/js/clear_cart.js',
+        ],
+    },
 }
 # -*- coding: utf-8 -*-
