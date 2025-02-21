@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import typing
-from odoo import fields, models, api
+from odoo import fields, models
 
 
 class SaleOrder(models.Model):

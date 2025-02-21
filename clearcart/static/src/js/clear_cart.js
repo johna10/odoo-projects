@@ -6,7 +6,6 @@ import { rpc } from "@web/core/network/rpc";
 if($('.o_cart_product').length < 1){
       $('#clear_cart_button').hide();
                   }
-
 publicWidget.registry.WebsiteSaleCartAllClear = publicWidget.Widget.extend({
     selector: '.oe_website_sale',
     events: {

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--Menus-->
+    <menuitem id="study_menu_root" name="STUDY PURPOSE">
+        <menuitem id="school_student_menu" name="Laptop" sequence="1">
+            <menuitem id="school_student_registration_menu_action"
+                      action="deligation_laptop_model_action"
+                      name="Laptops"/>
+        </menuitem>
+        <menuitem id="school_club_menu" name="Screen" sequence="2">
+            <menuitem id="school_clusb_menu_action" action="deligation_screen_model_action" name="Screens"/>
+        </menuitem>
+        <menuitem id="school_study_menu" name="Keyboard" sequence="3">
+            <menuitem id="school_cludb_menu_action" action="deligation_keyboard_model_action" name="Keyboards"/>
+        </menuitem>
+    </menuitem>
+</odoo>

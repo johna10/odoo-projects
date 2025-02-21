@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+     <!--List view-->
+    <record id="deligation_laptop_list_view" model="ir.ui.view">
+        <field name="name">list</field>
+        <field name="model">delegation.laptop</field>
+        <field name="arch" type="xml">
+            <list string="DeligationLaptopList">
+                <field name="name"/>
+                <field name="maker"/>
+                <field name="screen_id"/>
+                <field name="keyboard_id"/>
+            </list>
+        </field>
+    </record>
+
+    <!--Form View-->
+    <record id="deligation_laptop_form_view" model="ir.ui.view">
+        <field name="name">form</field>
+        <field name="model">delegation.laptop</field>
+        <field name="arch" type="xml">
+            <form string="DeligationLaptopForm">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="maker"/>
+                            <field name="screen_id"/>
+                            <field name="keyboard_id"/>
+                            <field name="product_id"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!--Action-->
+    <record id="deligation_laptop_model_action" model="ir.actions.act_window">
+         <field name="name">Deliation Laptop</field>
+         <field name="res_model">delegation.laptop</field>
+         <field name="view_mode">list,form</field>
+    </record>
+
+</odoo>

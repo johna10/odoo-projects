@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from odoo import fields,models,Command,api
+from odoo import fields,models,Command
 
 
 class SchoolTeacher(models.Model):
