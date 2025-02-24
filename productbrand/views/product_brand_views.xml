@@ -6,7 +6,7 @@
         <field name="model">product.brand</field>
         <field name="arch" type="xml">
             <list string="ProductBrandList">
-                <field name="name"/>
+                <field name="brand"/>
             </list>
         </field>
     </record>
@@ -18,7 +18,7 @@
         <field name="arch" type="xml">
             <form string="ProductBrandForm">
                 <sheet>
-                <h1><h1><field name="name"/></h1></h1>
+                <h1><h1><field name="brand"/></h1></h1>
                 </sheet>
             </form>
         </field>

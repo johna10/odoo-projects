@@ -11,5 +11,10 @@
         'views/product_template_form_views.xml',
         'views/product_brand_views.xml',
     ],
+    'assets': {
+        'point_of_sale._assets_pos': [
+            'productbrand/static/src/**/*',
+        ],
+    },
 }
 # -*- coding: utf-8 -*-
