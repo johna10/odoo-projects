@@ -1,10 +1,9 @@
 from odoo import models, fields,api
 
 class ProductBrand(models.Model):
-    """Class used for create brand for the products, and load to the POS."""
-
+    """Class used for creating brands for products and loading them into the POS."""
     _name = 'product.brand'
-    _description = 'Create Brands for products'
+    _description = 'Create Brands for Products'
     _rec_name = 'brand'
     _inherit = ['pos.load.mixin']
 
@@ -12,6 +11,4 @@ class ProductBrand(models.Model):
 
     @api.model
     def _load_pos_data_fields(self, config_id):
-        result = super()._load_pos_data_fields(config_id)
-        result.append('brand')
-        return result
+        return ['id', 'brand']  # Fix: 'brand' instead of 'name'

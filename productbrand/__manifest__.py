@@ -5,7 +5,7 @@
     'author': "Alan John",
     'category': 'Education',
     'summary': 'THIS IS UPDATED',
-    'depends': ['mail', 'base', 'sale_management', 'contacts', 'base_automation', 'website','point_of_sale'],
+    'depends': ['point_of_sale'],
     'data': [
         'security/ir.model.access.csv',
         'views/product_template_form_views.xml',
