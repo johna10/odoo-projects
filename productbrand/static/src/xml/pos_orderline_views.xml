@@ -2,26 +2,9 @@
 <templates id="template" xml:space="preserve">
     <t t-name="productbrand.Orderline" t-inherit="point_of_sale.Orderline" t-inherit-mode="extension">
         <xpath expr="//div[hasclass('product-name')]" position="after">
-            <p>Popp</p>
-
-            <t t-log="'------------------------------------------------------------------------------------------------'"/>
-            <t t-log="'From Brand Inheritance'"/>
-            <t t-set="foo" t-value="42"/>
-            <t t-log="'number: ' + foo"/>
-            <t t-log="'brand: ' + line.brand"/>
-            <t t-log="'------------------------------------------------------------------------------------------------'"/>
-<!--            <t t-set="line" t-value="props.line" />-->
-<!--            <li class="orderline position-relative d-flex align-items-center p-2 lh-sm cursor-pointer" t-attf-class="{{ line.comboParent ? 'orderline-combo ms-4 fst-italic' : '' }}" t-att-class="props.class">-->
-<!--                <div class="d-flex flex-column w-100 gap-1">-->
-<!--                    <div class="d-flex justify-content-between">-->
-<!--                        <div class="product-brand-name d-inline-block flex-grow-1 fw-bolder pe-1 text-truncate">-->
-<!--                            <span class="text-wrap" t-esc="line.brand"/>-->
-<!--    &lt;!&ndash;                        <t t-slot="product-name"/>&ndash;&gt;-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </li>-->
-
+            <div class="product-brand" style="margin-right:10px;">
+                <t t-esc="'Brand : ' + line.brand"/>
+            </div>
         </xpath>
     </t>
 </templates>

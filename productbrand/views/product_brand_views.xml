@@ -6,7 +6,7 @@
         <field name="model">product.brand</field>
         <field name="arch" type="xml">
             <list string="ProductBrandList">
-                <field name="brand"/>
+                <field name="name"/>
             </list>
         </field>
     </record>
@@ -18,7 +18,7 @@
         <field name="arch" type="xml">
             <form string="ProductBrandForm">
                 <sheet>
-                <h1><h1><field name="brand"/></h1></h1>
+                <h1><h1><field name="name"/></h1></h1>
                 </sheet>
             </form>
         </field>
@@ -32,6 +32,7 @@
     </record>
 
      <!--Menus-->
-    <menuitem id="pos_product_brand_menu_action" parent="point_of_sale.pos_config_menu_catalog" action="product_brand_model_action" name="Product Brands" sequence="11"/>
+    <menuitem id="pos_product_brand_menu_action" parent="point_of_sale.pos_config_menu_catalog"
+              action="product_brand_model_action" name="Product Brands" sequence="11"/>
 
 </odoo>

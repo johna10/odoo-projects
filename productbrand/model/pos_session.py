@@ -12,8 +12,3 @@ class PosSession(models.Model):
         data += ['product.brand']
         return data
 
-class PosOrderLine(models.Model):
-    _inherit = "pos.order.line"
-
-    brand = fields.Many2one(related='product_id.product_tmpl_id.brand',
-                            string='Product Brand', store=True)
