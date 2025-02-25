@@ -2,9 +2,11 @@
 <templates id="template" xml:space="preserve">
     <t t-name="productbrand.Orderline" t-inherit="point_of_sale.Orderline" t-inherit-mode="extension">
         <xpath expr="//div[hasclass('product-name')]" position="after">
-            <div class="product-brand" style="margin-right:10px;">
-                <t t-esc="'Brand : ' + line.brand"/>
-            </div>
+            <t t-if="props.line.brand">
+                <div class="product-brand" style="margin-right:10px;">
+                    <t t-esc="'Brand : ' + line.brand"/>
+                </div>
+            </t>
         </xpath>
     </t>
 </templates>
