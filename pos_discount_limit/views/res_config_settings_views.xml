@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+   <record id="pos_discount_limit_res_config_settings_view_form" model="ir.ui.view">
+       <field name="name">
+           res.config.settings.view.form.inherit.bg.pos
+       </field>
+       <field name="model">res.config.settings</field>
+       <field name="inherit_id"
+              ref="point_of_sale.res_config_settings_view_form"/>
+       <field name="arch" type="xml">
+           <xpath expr="//setting[@id='manual_discount']"
+                  position="after">
+               <setting id="pos_discount_limit"
+            documentation="https://www.odoo.com/documentation/17.0"
+            title="User can limit the discount amount in the
+                    pos Session."
+                 help="User can limit the discount amount">
+                   <field name="pos_is_discount_limit"/>
+                   <div class="content-group"
+                        invisible="not pos_is_discount_limit">
+                        <field name="pos_discount_type" widget="radio" options='{"horizontal": 1}' />
+                       <div class="mt16" invisible="pos_discount_type == 'percentage'">
+                           <label for="pos_discount_fixed_limit"/>
+                           <field name="pos_discount_fixed_limit"/>
+                       </div>
+                       <div class="mt16" invisible="pos_discount_type == 'fixed'">
+                           <label for="pos_discount_percentage_limit"/>
+                           <field name="pos_discount_percentage_limit"/>
+                       </div>
+                   </div>
+               </setting>
+           </xpath>
+       </field>
+   </record>
+</odoo>

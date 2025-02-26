@@ -1,5 +1,5 @@
 {
-    'name': 'Product Brand',
+    'name': 'Product-Brand',
     'application': True,
     'version': '18.0.1.0.0',
     'author': "Alan John",
