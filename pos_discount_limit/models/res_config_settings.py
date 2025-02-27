@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
-from odoo import fields, models
+from odoo import fields, models,api
 
 
 class ResConfigSettings(models.TransientModel):
     """The model is used to add a discount limit feature within the pos settings."""
     _inherit = 'res.config.settings'
 
-    pos_is_discount_limit = fields.Boolean(string='Discount limit KK',
+    pos_is_discount_limit = fields.Boolean(string='Discount limit KKi',
                                         related='pos_config_id.is_discount_limit', readonly=False,
                                         help='Check this field for enabling discount limit')
     pos_discount_type = fields.Selection([('fixed','Fixed'), ('percentage','Percentage')],
