@@ -26,106 +26,57 @@ patch(PosStore.prototype, {
 
         const currentOrder = this.get_order().get_orderlines();
 
+        console.log('Length of the order line:', currentOrder.length);
 
-        console.log('Length of the order line ',currentOrder.length )
-
-
-
-
-
-
-
-
-
-        var Dis = 0;
         var global_discount = 0;
         var individual_line_discount = 0;
+        var Dis = 0;
 
         for (var i = 0; i < currentOrder.length; i++) {
+            let product = currentOrder[i];
 
-              if(currentOrder[i].full_product_name === "Discount"){
-                    console.log("DISCOUNT PRODUCT")
-                    var discounted_amount = currentOrder[i].price_subtotal;
-                    console.log('Discount product price',discounted_amount)
-                    global_discount += Math.abs(discounted_amount);
-              }
-              else{
-                    console.log(currentOrder[i].discount)
-                    if(currentOrder[i].discount){
-                        console.log('Product have discount ')
-                        var discounted_amount = currentOrder[i].price_subtotal; // After discount
-                        var actual_price = currentOrder[i].price_unit * currentOrder[i].qty; // Original price without discount
-                        var final_price = discounted_amount// Total after discount
+            if (product.full_product_name === "Discount") {
+                console.log("DISCOUNT PRODUCT");
+                let discounted_amount = product.price_subtotal;
+                console.log("Discount product price:", discounted_amount);
+                global_discount += Math.abs(discounted_amount);
+            } else {
+                console.log('--------------------');
+                console.log(product.full_product_name);
+                console.log('Discount given :',product.discount);
+                let product_discount = 0; // Store discount for the current product
 
-                            console.log(' product price after discount applied',discounted_amount)
-                            console.log(' product actual price ',actual_price)
-                            console.log(' product final price',final_price)
+                if (product.discount) {
+                    console.log("Product has discount");
+                    let discounted_amount = product.price_subtotal; // After discount
+                    let actual_price = product.price_unit * product.qty; // Original price without discount
+                    let discount_applied = actual_price - discounted_amount; // Discount for this product
 
-                        if(discounted_amount != actual_price){
-                            console.log('Discount is applied')
-                            individual_line_discount += actual_price - final_price; // Discount on this product
-                        }
-                        else{
-                            console.log('Discount is not applied')
-                        }
+                    console.log("Product price after discount applied:", discounted_amount);
+                    console.log("Product actual price:", actual_price);
+                    console.log("Discount applied:", discount_applied);
+
+                    if (discount_applied > 0) {
+                        console.log("Discount is applied");
+                        product_discount = discount_applied; // Store discount only for this product
+                    } else {
+                        console.log("Discount is not applied");
                     }
-                    else{
-                            console.log('Product have no discount')
-                    }
-                      console.log(' product individual line discount',individual_line_discount)
-                      console.log('---------------------')
-              }
+                } else {
+                    console.log("Product has no line-wise discount");
+                }
 
-
-
-
-
-
-
-//            if(currentOrder[i].full_product_name === "Discount"){
-//                console.log("DISCOUNT PRODUCT")
-//                var discounted_amount = currentOrder[i].price_subtotal;
-//                console.log('Discount product price',discounted_amount)
-//                global_discount += Math.abs(discounted_amount);
-//            }
-//            else{
-//                console.log('NON DISCOUNT PRODUCT')
-//                var discounted_amount = currentOrder[i].price_subtotal; // After discount
-//                var actual_price = currentOrder[i].price_unit * currentOrder[i].qty; // Original price without discount
-//                var final_price = discounted_amount// Total after discount
-//
-//                console.log(' product price after discount applied',discounted_amount)
-//                console.log(' product actual price ',actual_price)
-//                console.log(' product final price',final_price)
-//
-//                if(discounted_amount != actual_price){
-//                    console.log('Discount is applied')
-//                    individual_line_discount = actual_price - final_price; // Discount on this product
-//                }
-//                else{
-//                    console.log('Discount is not applied')
-//                }
-//                console.log(' product individual line discount',individual_line_discount)
-//
-//            }
-//            Dis += individual_line_discount + global_discount; // Accumulate discount
-//            console.log('/////////////////////////')
+                individual_line_discount += product_discount; // Accumulate only the current product's discount
+                console.log("Sum of individual line discounts:", individual_line_discount);
+                console.log("---------------------");
+            }
         }
 
+        // **Move the total discount calculation outside the loop**
+        Dis = individual_line_discount + global_discount;
+        console.log("Final Discount given for current order:", Dis);
 
-
-
-
-
-
-
-
-
-
-
-
-
-        console.log('Discount given for current order:', Dis);
+        this.Total_discount_limit_balance = this.Total_discount_limit_balance || 0;
         var add_to_session_balance = this.Total_discount_limit_balance + Dis
         console.log('Total Discount given by the session :', add_to_session_balance);
 
@@ -147,8 +98,8 @@ patch(PosStore.prototype, {
         else{
             console.log('No Balance');
             this.dialog.add(AlertDialog, {
-                    title: _t("Discount Limit Exceed."),
-                    body: _t('The available balance for discount is Zero'),
+                    title: _t("Discount Limit Exceed.                                                "),
+                    body: _t('Discount limit for the current session is over. Please remove the discount to continue.'),
                 });
         }
     }
