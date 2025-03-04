@@ -7,21 +7,26 @@ import { usePos } from "@point_of_sale/app/store/pos_hook";
 import { patch } from "@web/core/utils/patch";
 import { useService } from "@web/core/utils/hooks";
 
-console.log(this)
+console.log(this.config)
 console.log('hai')
 patch(PosStore.prototype, {
     async processServerData(){
         super.processServerData();
-        console.log(this);
-        this.Total_discount_limit_balance = this.config.discount_fixed_limit
-        console.log('PROCESS SERVER DATA LIMIT', this.Total_discount_limit_balance);
+        this.Total_discount_limit_balance = this.config.current_session_id.session_discount_balance
+        console.log('Present Session given Discount', this.Total_discount_limit_balance);
         console.log('###################################');
     },
 
     async pay(){
 
+    console.log('Current Opened Session ID :',this.config.current_session_id.id)
+
+    this.discount_limit_of_session = this.config.discount_fixed_limit;
+    console.log("Limit given to current Shop :", this.discount_limit_of_session)
+
     const currentOrder = this.get_order().get_orderlines();
     var Dis = 0;
+
     for (var i = 0; i < currentOrder.length; i++) {
         const discount = this.discount;
         const discounted_amount = currentOrder[i].price_subtotal; // After discount
@@ -35,14 +40,24 @@ patch(PosStore.prototype, {
         Dis += individual_line_discount + global_discount; // Accumulate discount
     }
 
-    console.log('Total Discount Taken:', Dis);
-    this.Total_discount_limit_balance = this.Total_discount_limit_balance - Dis
-    console.log('Discount Balance :', this.Total_discount_limit_balance);
+    console.log('Discount given for current order:', Dis);
+    let add_to_session_balance = this.Total_discount_limit_balance + Dis
+    console.log('Total Discount given by the session :', add_to_session_balance);
 
-    if(this.Total_discount_limit_balance > 0){
+    if( 0 <= add_to_session_balance && add_to_session_balance < this.discount_limit_of_session){
         console.log('Balance present');
-//        alert('have Balance ');
-        return super.pay();
+        this.Total_discount_limit_balance = add_to_session_balance;
+        console.log('Updated Balance from local', this.Total_discount_limit_balance)
+
+       await this.env.services.orm.call(
+                "pos.session",
+                "sample",
+                [
+                this.config.current_session_id.id,
+                this.Total_discount_limit_balance,
+                ]);
+
+        return await super.pay();
     }
     else{
         console.log('No Balance');
@@ -53,4 +68,5 @@ patch(PosStore.prototype, {
     }
     }
 });
+
 
