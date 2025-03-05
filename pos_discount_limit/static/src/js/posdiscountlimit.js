@@ -11,7 +11,7 @@ import { useService } from "@web/core/utils/hooks";
 patch(PosStore.prototype, {
     async processServerData(){
         super.processServerData();
-        this.Total_discount_limit_balance = this.config.current_session_id.session_discount_balance
+        this.total_discount_limit_balance = this.config.current_session_id.session_discount_balance
     },
 
     async pay(){
@@ -40,16 +40,16 @@ patch(PosStore.prototype, {
             }
         }
         Dis = individual_line_discount + global_discount;
-        this.Total_discount_limit_balance = this.Total_discount_limit_balance || 0;
-        var add_to_session_balance = this.Total_discount_limit_balance + Dis
+        this.total_discount_limit_balance = this.total_discount_limit_balance || 0;
+        var add_to_session_balance = this.total_discount_limit_balance + Dis
         if( 0 <= add_to_session_balance && add_to_session_balance < this.discount_limit_of_session){
-            this.Total_discount_limit_balance = add_to_session_balance;
+            this.total_discount_limit_balance = add_to_session_balance;
             await this.env.services.orm.call(
                     "pos.session",
                     "sample",
                     [
                     this.config.current_session_id.id,
-                    this.Total_discount_limit_balance,
+                    this.total_discount_limit_balance,
                     ]);
 
             return await super.pay();
