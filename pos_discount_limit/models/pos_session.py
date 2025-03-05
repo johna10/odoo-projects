@@ -12,22 +12,12 @@ class PosSession(models.Model):
         """Method used to load the additonal field to the pos.session."""
         result = super()._load_pos_data_fields(config_id)
         result.append('session_discount_balance')
-        print('RRRR')
-        print(self.session_discount_balance)
         return result
 
     @api.model
     def sample(self, session_id, value):
-        print('Sample', value)
-        print('Session Id', session_id)
-
-        # Get the active POS session
+        """Method used to store update the session discount."""
         session = self.env['pos.session'].browse(session_id)
         if session:
-            print("Before Update:", session.session_discount_balance)
-            # Update the session's discount balance
             session.write({'session_discount_balance': value})
-            print("Updated Session Limit:", session.session_discount_balance)
-        else:
-            print("No active POS session found!")
 
