@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo noupdate="1">
-    <record id="paytrail_payment_acquirer_atom" model="payment.provider">
+    <record id="paytrail_payment_provider" model="payment.provider">
         <field name="name">PayTrail</field>
+        <field name="code">paytrail</field>
         <field name="image_128" type="base64" file="payment_paytrail/static/img/PayTrail_logo.png"/>
         <field name="state">test</field>
         <field name="payment_method_ids"
                eval="[Command.set([
-                         ref('payment.payment_method_card'),
+                         ref('payment_paytrail.payment_method_paytrail'),
+                         ref('payment_paytrail.payment_method_card'),
                      ])]"/>
     </record>
 </odoo>

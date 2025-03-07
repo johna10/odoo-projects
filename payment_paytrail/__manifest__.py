@@ -8,8 +8,11 @@
     'summary': 'Add Paytrail payment provider to odoo',
     'depends': ['payment'],
     'data': [
+        'views/payment_provider_views.xml',
 
+        'data/payment_method_data.xml',
         'data/payment_provider_data.xml',
+
     ],
 
 }
