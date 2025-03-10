@@ -10,5 +10,6 @@
                          ref('payment_paytrail.payment_method_paytrail'),
                          ref('payment_paytrail.payment_method_card'),
                      ])]"/>
+        <field name="redirect_form_view_id" ref="redirect_form"/>
     </record>
 </odoo>

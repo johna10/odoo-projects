@@ -6,6 +6,7 @@ import pprint
 from werkzeug import urls
 
 from odoo import _, models
+from odoo.tools import float_round
 from odoo.exceptions import ValidationError
 
 from odoo.addons.payment.const import CURRENCY_MINOR_UNITS
@@ -19,6 +20,8 @@ class PaymentTransaction(models.Model):
     _inherit = 'payment.transaction'
 
     def _get_specific_rendering_values(self, processing_values):
+        print('------------------------------------------------')
+        print('Call come inside the rendering fn in paytrail')
         """ Override of payment to return Mollie-specific rendering values.
 
         Note: self.ensure_one() from `_get_processing_values`
@@ -29,11 +32,19 @@ class PaymentTransaction(models.Model):
         """
         res = super()._get_specific_rendering_values(processing_values)
         if self.provider_code != 'paytrail':
+            print('YEsssssssssssssssss')
             return res
 
+        print('NOOOOOOOOOOOOOOOOOOOOO')
+
+        endpoint = 'services.paytrail.com'
         payload = self._paytrail_prepare_payment_request_payload()
+        print('-------------------------')
+        print('come back to rendering fn')
         _logger.info("sending '/payments' request for link creation:\n%s", pprint.pformat(payload))
-        payment_data = self.provider_id._paytrail_make_request('/payments', data=payload)
+        payment_data = self.provider_id._paytrail_make_request(endpoint, data=payload)
+        print('--------------------------')
+        print('Come back to rendering fn')
 
         # The provider reference is set now to allow fetching the payment status after redirection
         self.provider_reference = payment_data.get('id')
@@ -42,12 +53,16 @@ class PaymentTransaction(models.Model):
         # rendering values. Passing the query parameters separately is necessary to prevent them
         # from being stripped off when redirecting the user to the checkout URL, which can happen
         # when only one payment method is enabled on Mollie and query parameters are provided.
-        checkout_url = payment_data['_links']['checkout']['href']
-        parsed_url = urls.url_parse(checkout_url)
-        url_params = urls.url_decode(parsed_url.query)
-        return {'api_url': checkout_url, 'url_params': url_params}
+        # checkout_url = payment_data['_links']['checkout']['href']
+        # parsed_url = urls.url_parse(checkout_url)
+        # url_params = urls.url_decode(parsed_url.query)
+        print('set all')
+        # return {'api_url': checkout_url, 'url_params': url_params}
+        return print("RENDERING END")
 
     def _paytrail_prepare_payment_request_payload(self):
+        print('------------------------')
+        print('Comes to Payload fn')
         """ Create the payload for the payment request based on the transaction values.
 
         :return: The request payload
@@ -60,7 +75,7 @@ class PaymentTransaction(models.Model):
         decimal_places = CURRENCY_MINOR_UNITS.get(
             self.currency_id.name, self.currency_id.decimal_places
         )
-
+        print('return payload')
         return {
             'description': self.reference,
             'amount': {

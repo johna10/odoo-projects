@@ -26,6 +26,13 @@ class PaymentProvider(models.Model):
     paytrail_api_key = fields.Char(
         string="API Key", help="The API key of the webservice user")
 
+    redirect_form_view_id = fields.Many2one(
+        string="Redirect Form Template", comodel_name='ir.ui.view',
+        help="The template rendering a form submitted to redirect the user when making a payment",
+        domain=[('type', '=', 'qweb')],
+        ondelete='restrict',
+    )
+
     # === BUSINESS METHODS ===#
 
     def _get_supported_currencies(self):
@@ -38,6 +45,10 @@ class PaymentProvider(models.Model):
         return supported_currencies
 
     def _paytrail_make_request(self, endpoint, data=None, method='POST'):
+        print('---------------------------')
+        print('Call Comes inside Request CALL')
+        print('endpoint----->', endpoint)
+        print('Data----->', endpoint)
         """ Make a request at mollie endpoint.
 
         Note: self.ensure_one()
@@ -51,31 +62,35 @@ class PaymentProvider(models.Model):
         """
         self.ensure_one()
         endpoint = f'/v2/{endpoint.strip("/")}'
-        url = urls.url_join('https://api.mollie.com/', endpoint)
+        url = urls.url_join('https://api.paytrail.com/', endpoint)
 
         odoo_version = service.common.exp_version()['server_version']
         module_version = self.env.ref('base.module_payment_mollie').installed_version
+        print("HEADER SETTING")
         headers = {
             "Accept": "application/json",
-            "Authorization": f'Bearer {self.mollie_api_key}',
+            "Authorization": f'Bearer {self.paytrail_api_key}',
             "Content-Type": "application/json",
             # See https://docs.mollie.com/integration-partners/user-agent-strings
             "User-Agent": f'Odoo/{odoo_version} MollieNativeOdoo/{module_version}',
         }
+        print("HEADER SET")
 
         try:
+            print('API')
             response = requests.request(method, url, json=data, headers=headers, timeout=60)
-            try:
-                response.raise_for_status()
-            except requests.exceptions.HTTPError:
-                _logger.exception(
-                    "Invalid API request at %s with data:\n%s", url, pprint.pformat(data)
-                )
-                raise ValidationError(
-                    "Mollie: " + _(
-                        "The communication with the API failed. Mollie gave us the following "
-                        "information: %s", response.json().get('detail', '')
-                    ))
+            print('API CALLED')
+            # try:
+            #     response.raise_for_status()
+            # except requests.exceptions.HTTPError:
+            #     _logger.exception(
+            #         "Invalid API request at %s with data:\n%s", url, pprint.pformat(data)
+            #     )
+            #     raise ValidationError(
+            #         "Mollie: " + _(
+            #             "The communication with the API failed. Mollie gave us the following "
+            #             "information: %s", response.json().get('detail', '')
+            #         ))
         except (requests.exceptions.ConnectionError, requests.exceptions.Timeout):
             _logger.exception("Unable to reach endpoint at %s", url)
             raise ValidationError(
@@ -86,6 +101,28 @@ class PaymentProvider(models.Model):
     def _get_default_payment_method_codes(self):
         """ Override of `payment` to return the default payment method codes. """
         default_codes = super()._get_default_payment_method_codes()
-        if self.code != 'mollie':
+        if self.code != 'paytrail':
             return default_codes
         return const.DEFAULT_PAYMENT_METHOD_CODES
+
+# === BUSINESS METHODS - GETTERS === #
+
+    def _get_redirect_form_view(self, is_validation=False):
+        """ Override of `payment` to avoid rendering the form view for validation operations.
+
+        Unlike other compatible payment methods in Xendit, `Card` is implemented using a direct
+        flow. To avoid rendering a useless template, and also to avoid computing wrong values, this
+        method returns `None` for Xendit's validation operations (Card is and will always be the
+        sole tokenizable payment method for Xendit).
+
+        Note: `self.ensure_one()`
+
+        :param bool is_validation: Whether the operation is a validation.
+        :return: The view of the redirect form template or None.
+        :rtype: ir.ui.view | None
+        """
+        self.ensure_one()
+
+        if self.code == 'xendit' and is_validation:
+            return None
+        return super()._get_redirect_form_view(is_validation)
