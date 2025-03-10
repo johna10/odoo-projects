@@ -37,7 +37,7 @@ class PaymentTransaction(models.Model):
 
         print('NOOOOOOOOOOOOOOOOOOOOO')
 
-        endpoint = 'services.paytrail.com'
+        endpoint = '/payments'
         payload = self._paytrail_prepare_payment_request_payload()
         print('-------------------------')
         print('come back to rendering fn')

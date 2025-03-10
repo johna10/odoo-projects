@@ -2,6 +2,11 @@
 
 import logging
 import pprint
+import uuid
+import hmac
+import hashlib
+import json
+from datetime import datetime, timezone
 
 import requests
 from werkzeug import urls
@@ -45,57 +50,86 @@ class PaymentProvider(models.Model):
         return supported_currencies
 
     def _paytrail_make_request(self, endpoint, data=None, method='POST'):
-        print('---------------------------')
-        print('Call Comes inside Request CALL')
-        print('endpoint----->', endpoint)
-        print('Data----->', endpoint)
-        """ Make a request at mollie endpoint.
+        print('--------------------------')
+        print('Comes inside the payment API request')
+        """Make a request to the Paytrail API with a properly signed header.
 
-        Note: self.ensure_one()
-
-        :param str endpoint: The endpoint to be reached by the request
-        :param dict data: The payload of the request
-        :param str method: The HTTP method of the request
-        :return The JSON-formatted content of the response
+        :param str endpoint: The Paytrail API endpoint (without base URL)
+        :param dict data: Request body (if any)
+        :param str method: HTTP method ('POST' or 'GET')
+        :return: JSON response from Paytrail
         :rtype: dict
         :raise: ValidationError if an HTTP error occurs
         """
         self.ensure_one()
-        endpoint = f'/v2/{endpoint.strip("/")}'
-        url = urls.url_join('https://api.paytrail.com/', endpoint)
 
-        odoo_version = service.common.exp_version()['server_version']
-        module_version = self.env.ref('base.module_payment_mollie').installed_version
-        print("HEADER SETTING")
+        # ✅ Step 1: Define required headers
         headers = {
-            "Accept": "application/json",
-            "Authorization": f'Bearer {self.paytrail_api_key}',
-            "Content-Type": "application/json",
-            # See https://docs.mollie.com/integration-partners/user-agent-strings
-            "User-Agent": f'Odoo/{odoo_version} MollieNativeOdoo/{module_version}',
+            "checkout-method": method,
+            "checkout-account": str(self.paytrail_merchant_account),
+            "checkout-algorithm": "sha256",
+            "checkout-nonce": str(uuid.uuid4()),  # Unique nonce per request
+            "checkout-timestamp": datetime.now(timezone.utc).isoformat(timespec='milliseconds') + 'Z',
+            "content-type": "application/json; charset=utf-8"
         }
-        print("HEADER SET")
+        print("Header set")
+        print(headers)
 
+        # ✅ Step 2: Sort headers alphabetically
+        sorted_headers = dict(sorted(headers.items()))
+        print('sorted headers')
+        print(sorted_headers)
+
+        # ✅ Step 3: Create the signature payload
+        def generate_signature_payload(headers, body=None):
+            """Format headers and body into a signature payload."""
+            payload = "\n".join(f"{key}:{value}" for key, value in headers.items())
+
+            # Ensure the body is handled properly
+            if body:
+                json_body = json.dumps(body, separators=(',', ':'))  # Minimized JSON format
+            else:
+                json_body = ""  # Paytrail requires a newline even if body is empty
+
+            return payload + "\n" + json_body  # Ensure newline before the body
+
+        signature_payload = generate_signature_payload(sorted_headers, data)
+
+        print('signature payload is created')
+        print(signature_payload)
+
+        # ✅ Step 4: Generate HMAC-SHA256 signature
+        def generate_signature(payload, secret_key):
+            """Create HMAC SHA-256 signature."""
+            return hmac.new(secret_key.encode(), payload.encode(), hashlib.sha256).hexdigest()
+
+        print('ID:',self.paytrail_merchant_account)
+        print('KEY :',self.paytrail_api_key)
+        signature = generate_signature(signature_payload, self.paytrail_api_key)
+
+        print('Signature is created')
+        print(signature)
+
+        # ✅ Step 5: Append signature to headers
+        sorted_headers["signature"] = signature
+        print('Signature appended')
+        print(sorted_headers)
+
+
+        print('BEFORE ENDPOINT STRIPED:', endpoint)
+        # ✅ Step 6: Send the request
+        endpoint = f'/v2/{endpoint.strip("/")}'
+        print("AFTER ENDPOINT STRIPED:", endpoint)
+        url = urls.url_join('https://services.paytrail.com/', endpoint)
+
+        print('Call Initiated')
         try:
-            print('API')
-            response = requests.request(method, url, json=data, headers=headers, timeout=60)
-            print('API CALLED')
-            # try:
-            #     response.raise_for_status()
-            # except requests.exceptions.HTTPError:
-            #     _logger.exception(
-            #         "Invalid API request at %s with data:\n%s", url, pprint.pformat(data)
-            #     )
-            #     raise ValidationError(
-            #         "Mollie: " + _(
-            #             "The communication with the API failed. Mollie gave us the following "
-            #             "information: %s", response.json().get('detail', '')
-            #         ))
-        except (requests.exceptions.ConnectionError, requests.exceptions.Timeout):
-            _logger.exception("Unable to reach endpoint at %s", url)
-            raise ValidationError(
-                "Mollie: " + _("Could not establish the connection to the API.")
-            )
+            response = requests.request(method, url, json=data, headers=sorted_headers, timeout=60)
+            response.raise_for_status()
+        except (requests.exceptions.HTTPError, requests.exceptions.ConnectionError, requests.exceptions.Timeout) as e:
+            _logger.exception("Error reaching Paytrail API: %s", url)
+            raise ValidationError(_("Paytrail API request failed: %s") % str(e))
+
         return response.json()
 
     def _get_default_payment_method_codes(self):
