@@ -1,116 +1,105 @@
-# Part of Odoo. See LICENSE file for full copyright and licensing details.
-
+# -*- coding: utf-8 -*-
+import hashlib
+import hmac
 import logging
 import pprint
 import uuid
-import hmac
-import hashlib
-import json
-from datetime import datetime, timezone
 
 import requests
-from werkzeug import urls
 
-from odoo import _, fields, models, service
+from odoo import models, fields, _
 from odoo.exceptions import ValidationError
-
-from odoo.addons.payment_mollie import const
 
 _logger = logging.getLogger(__name__)
 
 
 class PaymentProvider(models.Model):
-    _inherit = 'payment.provider'
+    _inherit = "payment.provider"
 
     code = fields.Selection(
-        selection_add=[('paytrail', "Paytrail")], ondelete={'paytrail': 'set default'})
-    paytrail_merchant_account = fields.Char(
-        string="Merchant Account ID",
-        help="The code of the merchant account to use with this provider"
-        )
-    paytrail_api_key = fields.Char(
-        string="API Key", help="The API key of the webservice user")
-
-    redirect_form_view_id = fields.Many2one(
-        string="Redirect Form Template", comodel_name='ir.ui.view',
-        help="The template rendering a form submitted to redirect the user when making a payment",
-        domain=[('type', '=', 'qweb')],
-        ondelete='restrict',
+        selection_add=[("paytrail", "Paytrail")],
+        ondelete={"paytrail": "set default"}
     )
+    paytrail_merchant_id = fields.Char(string="Merchant Id")
+    paytrail_secret_key = fields.Char(string="Secret Key")
 
-    # === BUSINESS METHODS ===#
-
-    def _get_supported_currencies(self):
-        """ Override of `payment` to return the supported currencies. """
-        supported_currencies = super()._get_supported_currencies()
-        if self.code == 'mollie':
-            supported_currencies = supported_currencies.filtered(
-                lambda c: c.name in const.SUPPORTED_CURRENCIES
-            )
-        return supported_currencies
-
-    def _paytrail_make_request(self, endpoint, data=None, method='POST'):
-        print('--------------------------')
-        print('Comes inside the payment API request')
-
-        merchant_id = self.paytrail_merchant_account
-        secret = self.paytrail_api_key
-        self.ensure_one()
-
-        #  Define required headers
-        headers = {
-            "checkout-method": method,
-            "checkout-account": str(merchant_id),
+    def _paytrail_make_request(self, body):
+        """to make request into paytrail"""
+        print(self.paytrail_merchant_id)
+        print(self.paytrail_secret_key)
+        paytrail_url = "https://services.paytrail.com/payments"
+        secret = self.paytrail_secret_key
+        headers = dict({
+            "checkout-account": self.paytrail_merchant_id,
             "checkout-algorithm": "sha256",
-            "checkout-nonce": str(uuid.uuid4()),  # Unique nonce per request
-            "checkout-timestamp": datetime.now(timezone.utc).isoformat(timespec='milliseconds') + 'Z',
-            "content-type": "application/json; charset=utf-8",
-        }
+            "checkout-method": "POST",
+            "checkout-nonce": str(uuid.uuid4()),
+            "checkout-timestamp": str(fields.Datetime.now().isoformat())
+        })
+        signature = self.calculate_hmac(secret, headers, body)
+        headers["signature"] = signature
 
-        encData = self.calculate_hmac(secret, headers, data)
-
-        print("Encrypted data: " + encData)
-        headers["signature"] = encData
-        print('Header----------------->',headers)
-        #  Send the request
-        endpoint = f'{endpoint.strip("/")}'
-        url = urls.url_join('https://services.paytrail.com/', endpoint)
-
-        print('Call Initiated')
         try:
-            print(method)
-            print(url)
-            print(data)
+            print(paytrail_url)
+            print(body)
             print(headers)
-
-            response = requests.request("POST", url=url, data=data, headers=headers, timeout=60)
-            response.raise_for_status()
-        except (requests.exceptions.HTTPError, requests.exceptions.ConnectionError, requests.exceptions.Timeout) as e:
-            _logger.exception("Error reaching Paytrail API: %s", url)
-            raise ValidationError(_("Paytrail API request failed: %s") % str(e))
-
+            response = requests.request(method="POST", url=paytrail_url, data=body, headers=headers,
+                                        timeout=60)  # (data=body) will only work if its (json=body) then there will be signature mismatch cos paytrail expect encoded data if we give body as data it will encode that automatically.if its json it wont encode it will just pass
+            if response.status_code == 201:
+                _logger.info("payment successfully created")
+            else:
+                _logger.error("\nError:", response.text)
+                print("\nError:", response.text)
+            try:
+                response.raise_for_status()
+            except requests.exceptions.HTTPError:
+                _logger.exception(
+                    "Invalid API request at %s with data:\n%s", paytrail_url, pprint.pformat(body)
+                )
+                raise ValidationError(
+                    "Paytrail: " + _(
+                        "The communication with the API failed. Paytrail gave us the following "
+                        "information: %s", response.json().get('detail', '')
+                    ))
+        except (requests.exceptions.ConnectionError, requests.exceptions.Timeout):
+            _logger.exception("Unable to reach endpoint at %s", paytrail_url)
+            raise ValidationError(
+                "Paytrail: " + _("Could not establish the connection to the API.")
+            )
         return response.json()
 
-
-    def calculate_hmac(self, secret, headerParams, body):
+    def calculate_hmac(self, secret, headers, body):
+        """to calculate hmac"""
         data = []
-        for key, value in headerParams.items():
+        for key, value in headers.items():
             if key.startswith('checkout-'):
                 data.append('{key}:{value}'.format(key=key, value=value))
-
         data.append(body)
-        return self.compute_sha256_hash('\n'.join(data), secret)
+        hmac = self.compute_sha256_hash('\n'.join(data), secret)
+        return hmac
 
     def compute_sha256_hash(self, message, secret):
+        """to hash the hmac"""
         # whitespaces that were created during json parsing process must be removed
         hash = hmac.new(secret.encode(), message.encode(), digestmod=hashlib.sha256)
         return hash.hexdigest()
 
+    def _get_redirect_form_view(self, is_validation=False):
+        """ Override of `payment` to avoid rendering the form view for validation operations.
 
+        Unlike other compatible payment methods in Xendit, `Card` is implemented using a direct
+        flow. To avoid rendering a useless template, and also to avoid computing wrong values, this
+        method returns `None` for Xendit's validation operations (Card is and will always be the
+        sole tokenizable payment method for Xendit).
 
+        Note: `self.ensure_one()`
 
+        :param bool is_validation: Whether the operation is a validation.
+        :return: The view of the redirect form template or None.
+        :rtype: ir.ui.view | None
+        """
+        self.ensure_one()
 
-
-
-
-
+        if self.code == 'paytrail' and is_validation:
+            return None
+        return super()._get_redirect_form_view(is_validation)
