@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--Menus-->
+    <menuitem id="dashboard_menu_root" name="Dashboard">
+        <menuitem id="dashboard_menu" name="Dash" sequence="1">
+            <menuitem id="dashboard_menu_action"
+                      action="custom_dashboard_action"
+                      name="DA"/>
+        </menuitem>
+    </menuitem>
+</odoo>

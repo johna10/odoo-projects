@@ -15,8 +15,10 @@ class PaytrailController(http.Controller):
     @http.route(_return_url, type='http', auth='public', methods=['GET', 'POST'], csrf=False, save_session=False)
     def paytrail_return_from_checkout(self, **data):
         """ Process the notification data sent by Paytrail after redirection from checkout."""
+        print("*******************************************")
         print("inside controller")
         print(data)
         _logger.info("handling redirection from Paytrail with data:\n%s", pprint.pformat(data))
         request.env['payment.transaction'].sudo()._handle_notification_data('paytrail', data)
         return request.redirect('/payment/status')
+

@@ -50,4 +50,15 @@
         <field name="active">False</field>
         <field name="image" type="base64" file="payment/static/img/amex.png"/>
     </record>
+
+    <record id="account_payment_paytrail_method_in" model="account.payment.method">
+        <field name="name">Paytrail Payment</field>
+        <field name="code">paytrail</field>
+        <field name="payment_type">inbound</field>
+    </record>
+    <record id="account_payment_paytrail_method_out" model="account.payment.method">
+        <field name="name">Paytrail Payment</field>
+        <field name="code">paytrail</field>
+        <field name="payment_type">outbound</field>
+    </record>
 </odoo>

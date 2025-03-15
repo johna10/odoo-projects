@@ -6,6 +6,7 @@ import pprint
 import uuid
 
 import requests
+from werkzeug import urls
 
 from odoo import models, fields, _
 from odoo.exceptions import ValidationError
@@ -21,14 +22,12 @@ class PaymentProvider(models.Model):
         ondelete={"paytrail": "set default"}
     )
     paytrail_merchant_id = fields.Char(string="Merchant Id")
-    paytrail_secret_key = fields.Char(string="Secret Key")
+    paytrail_api_key = fields.Char(string="Secret Key")
 
-    def _paytrail_make_request(self, body):
-        """to make request into paytrail"""
-        print(self.paytrail_merchant_id)
-        print(self.paytrail_secret_key)
-        paytrail_url = "https://services.paytrail.com/payments"
-        secret = self.paytrail_secret_key
+    def _paytrail_make_request(self,endpoint, body):
+        """Method used for making API call to the paytrail."""
+
+        secret = self.paytrail_api_key
         headers = dict({
             "checkout-account": self.paytrail_merchant_id,
             "checkout-algorithm": "sha256",
@@ -36,15 +35,17 @@ class PaymentProvider(models.Model):
             "checkout-nonce": str(uuid.uuid4()),
             "checkout-timestamp": str(fields.Datetime.now().isoformat())
         })
+
         signature = self.calculate_hmac(secret, headers, body)
+        print('Sign', signature)
         headers["signature"] = signature
 
+        endpoint = f'{endpoint.strip("/")}'
+        url = urls.url_join('https://services.paytrail.com/', endpoint)
+
         try:
-            print(paytrail_url)
-            print(body)
-            print(headers)
-            response = requests.request(method="POST", url=paytrail_url, data=body, headers=headers,
-                                        timeout=60)  # (data=body) will only work if its (json=body) then there will be signature mismatch cos paytrail expect encoded data if we give body as data it will encode that automatically.if its json it wont encode it will just pass
+            response = requests.request(method="POST", url=url, data=body, headers=headers,
+                                        timeout=60)
             if response.status_code == 201:
                 _logger.info("payment successfully created")
             else:
@@ -54,7 +55,7 @@ class PaymentProvider(models.Model):
                 response.raise_for_status()
             except requests.exceptions.HTTPError:
                 _logger.exception(
-                    "Invalid API request at %s with data:\n%s", paytrail_url, pprint.pformat(body)
+                    "Invalid API request at %s with data:\n%s", url, pprint.pformat(body)
                 )
                 raise ValidationError(
                     "Paytrail: " + _(
@@ -62,7 +63,7 @@ class PaymentProvider(models.Model):
                         "information: %s", response.json().get('detail', '')
                     ))
         except (requests.exceptions.ConnectionError, requests.exceptions.Timeout):
-            _logger.exception("Unable to reach endpoint at %s", paytrail_url)
+            _logger.exception("Unable to reach endpoint at %s", url)
             raise ValidationError(
                 "Paytrail: " + _("Could not establish the connection to the API.")
             )

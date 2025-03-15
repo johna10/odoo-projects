@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates>
+    <t t-name="Dashboard.Custom_Dashboard">
+        <div class="image-comment-container">
+            <div>
+                <img src="Dashboard/static/img/bakery.png" class="sample-image" alt="Sample Image"
+                     style="margin-left: 380px; margin-top: 40px; width: 520px; height: 300px; border-radius: 25px;
+                                                                     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2),
+                                                                      0 6px 20px 0 rgba(0, 0, 0, 0.19);"/>
+                <input type="text" class="comment-input" placeholder="Add a comment..." style="margin-left: 380px;
+                 margin-top: 40px; width: 520px; border-radius: 5px;
+                 box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);"  t-model="state.comment"/>
+
+                <button class="submit-button" t-on-click="submitComment"
+                style="margin-left: 380px;
+                 margin-top: 40px; width: 520px; border-radius: 5px;
+                 box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">Submit</button>
+
+            </div>
+                <CustomDashboardComments parent="state" />
+
+            <!-- Display Submitted Comment -->
+            <!--        <p t-if="state.submittedComment">Your Comment: <t t-esc="state.submittedComment"/></p>-->
+        </div>
+    </t>
+</templates>
+
+

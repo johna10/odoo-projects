@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates>
+    <t t-name="Dashboard.Custom_Dashboard_comment">
+        <div class="image-comment-container">
+            <div style="border border-danger">
+                <div t-esc="props.parent.comment"/>
+            </div>
+        </div>
+    </t>
+</templates>
+
+

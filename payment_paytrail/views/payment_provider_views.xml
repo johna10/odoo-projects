@@ -9,7 +9,7 @@
             <group name="provider_credentials" position="inside">
                 <group invisible="code != 'paytrail'">
                     <field name="paytrail_merchant_id" string="Merchant ID" required="code == 'paytrail' and state != 'disabled'" password="True"/>
-                    <field name="paytrail_secret_key" string="API Key" required="code == 'paytrail' and state != 'disabled'" password="True"/>
+                    <field name="paytrail_api_key" string="API Key" required="code == 'paytrail' and state != 'disabled'" password="True"/>
                 </group>
             </group>
         </field>
